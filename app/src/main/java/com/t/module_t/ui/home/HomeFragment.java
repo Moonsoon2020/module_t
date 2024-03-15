@@ -30,17 +30,7 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        Button button = root.findViewById(R.id.buttonSet);
-        button.setOnClickListener(v ->{
-            FirebaseAuth.getInstance().signOut();
-            Intent mIntent = new Intent(root.getContext(), Authentication.class);
-            mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(mIntent);
 
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
-        });
         return root;
     }
 
