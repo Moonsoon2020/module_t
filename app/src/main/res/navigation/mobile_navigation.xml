@@ -27,5 +27,5 @@
         android:id="@+id/navigation_settings"
         android:name="com.t.module_t.ui.settings.SettingsFragment"
         android:label="Настройки"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_setting" />
 </navigation>

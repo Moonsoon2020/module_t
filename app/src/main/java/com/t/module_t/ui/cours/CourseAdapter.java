@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,6 +48,7 @@ public class CourseAdapter  extends RecyclerView.Adapter<CourseAdapter.ViewHolde
         ViewHolder(View view){
             super(view);
             nameView = view.findViewById(R.id.textView);
+
         }
     }
 }

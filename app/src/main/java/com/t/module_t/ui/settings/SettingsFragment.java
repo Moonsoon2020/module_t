@@ -19,18 +19,20 @@ import com.t.module_t.Authentication;
 import com.t.module_t.R;
 import com.t.module_t.database.DataBaseControl;
 import com.t.module_t.database.User;
-import com.t.module_t.databinding.FragmentSettingsBinding;
+import com.t.module_t.databinding.FragmentSettingBinding;
+
+
 
 public class SettingsFragment extends Fragment {
     private final String TAG = "SettingsFragment";
 
-    private FragmentSettingsBinding binding;
+    private FragmentSettingBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         SettingsViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(SettingsViewModel.class);
-        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        binding = FragmentSettingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Bundle bundle = new Bundle();
         FragmentManager fm = getFragmentManager();
@@ -38,11 +40,10 @@ public class SettingsFragment extends Fragment {
         Bundle arguments = new Bundle();
         DataBaseControl control = new DataBaseControl();
         control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString(), v->{
-            if (!((User)v).status){
-                Fragment fragTwo = new StudentSettingsFragment();
-                arguments.putBoolean("shouldYouCreateAChildFragment", false);
-                fragTwo.setArguments(arguments);
-                ft.add(R.id.fragment_settings1, fragTwo);
+            if (((User)v).status){
+                Fragment fragOne = new TeacherSettingsFragment();
+                fragOne.setArguments(arguments);
+                ft.add(R.id.fragment_settings, fragOne);
             } else{
 
             }
