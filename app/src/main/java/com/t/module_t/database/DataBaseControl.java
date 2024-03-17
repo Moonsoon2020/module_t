@@ -32,6 +32,7 @@ public class DataBaseControl {
     public void addUser(String email, String password, String name, Boolean status, String id) {
         email = translate(email);
         User user = new User(name, email, status);
+        user.notifications.add(new Notification("Привет, это уведомление о регистрации, рады, что ты с нами."));
         mDatabase.child("users").child(email).setValue(user);
     }
 
@@ -40,7 +41,7 @@ public class DataBaseControl {
         mDatabase.child("users").child(email).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
+                if (task.getResult().getValue() == null) {
                     Log.e("firebase", "Ошибка при получении данных", task.getException());
                     callback.onUserFetch(null); // Уведомляем обратный вызов о получении нулевого значения
                 } else {
@@ -69,6 +70,20 @@ public class DataBaseControl {
         getStudentsByEmail(email, users::addAll);
         users.add(newuser);
         mDatabase.child("users").child(email).child("students").setValue(users);
+        ArrayList<Notification> notifications = new ArrayList<>();
+        getNotificationByEmail(newuser.email, notifications::addAll);
+        notifications.add(new Notification("Пользователь " + email + "добавил вас к своим ученикам"));
+        mDatabase.child("users").child(translate(newuser.email)).child("notifications").setValue(notifications);
+    }
+
+    public void getNotificationByEmail(String email,  final NotificationArrayCallback callback) {
+        email = translate(email);
+        getUser(email, v -> {
+            if (v != null){
+                callback.onNotificationArrayFetch(v.notifications);
+            } else
+                callback.onNotificationArrayFetch(new ArrayList<>());
+        });
     }
 
     public void checkUserInStudentsByEmail(String email, User userData, BoolCallback callback) {
