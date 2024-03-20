@@ -66,7 +66,7 @@ public class Registration extends AppCompatActivity {
                                 DataBaseControl control = new DataBaseControl();
                                 String name = editTextName.getText().toString();
                                 boolean status = aSwitch.isChecked();
-                                control.addUser(email, password, name, status, user.getUid().toString());
+                                control.addUser(email, name, status, user.getUid().toString());
                                 Intent intent = new Intent(Registration.this, MainActivity.class);
                                 startActivity(intent);
                             } else {

@@ -30,12 +30,12 @@ public class User {
         // Обработка списка студентов
         if (map.get("students") != null) {
             String stud = map.get("students").toString();
-            Pattern pattern = Pattern.compile("email=(.*?),\\s*status=(.*?),\\s*username=(.*?)\\}");
+            Pattern pattern = Pattern.compile("email=(.*?),\\s*notifications=(.*?),\\s*status=(.*?),\\s*username=(.*?)\\}");
             Matcher matcher = pattern.matcher(stud);
             while (matcher.find()) {
                 String email = matcher.group(1);
-                boolean status = Boolean.parseBoolean(matcher.group(2));
-                String username = matcher.group(3);
+                boolean status = Boolean.parseBoolean(matcher.group(3));
+                String username = matcher.group(4);
                 this.students.add(new User(username, email, status));
             }
         }

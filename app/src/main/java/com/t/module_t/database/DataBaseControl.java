@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,7 +30,7 @@ public class DataBaseControl {
         return email.replace(".", "~");
     }
 
-    public void addUser(String email, String password, String name, Boolean status, String id) {
+    public void addUser(String email, String name, Boolean status, String id) {
         email = translate(email);
         User user = new User(name, email, status);
         user.notifications.add(new Notification("Привет, это уведомление о регистрации, рады, что ты с нами."));
@@ -69,11 +70,14 @@ public class DataBaseControl {
         ArrayList<User> users = new ArrayList<>();
         getStudentsByEmail(email, users::addAll);
         users.add(newuser);
-        mDatabase.child("users").child(email).child("students").setValue(users);
         ArrayList<Notification> notifications = new ArrayList<>();
-        getNotificationByEmail(newuser.email, notifications::addAll);
         notifications.add(new Notification("Пользователь " + email + "добавил вас к своим ученикам"));
-        mDatabase.child("users").child(translate(newuser.email)).child("notifications").setValue(notifications);
+        getNotificationByEmail(newuser.email, v->{
+            notifications.addAll(v);
+            mDatabase.child("users").child(translate(newuser.email)).child("notifications").setValue(notifications);
+
+        });
+        mDatabase.child("users").child(email).child("students").setValue(users);
     }
 
     public void getNotificationByEmail(String email,  final NotificationArrayCallback callback) {
@@ -107,6 +111,19 @@ public class DataBaseControl {
         getStudentsByEmail(teacher, users::addAll);
         users.removeIf(user -> Objects.equals(user.getEmail(), email));
         mDatabase.child("users").child(teacher).child("students").setValue(users);
+        String finalTeacher = teacher;
+        getUser(email, v ->{
+            ArrayList<Notification> arr = v.notifications;
+            arr.add(new Notification("Преподаватель " + finalTeacher + "удалил вас, как своего студента."));
+            mDatabase.child("users").child(translate(email)).child("notifications").setValue(arr);
+
+        });
+    }
+
+    public void deleteNotifyOfUser(List<Notification> data, String user) {
+        mDatabase.child("users").child(translate(user)).
+                child("notifications").setValue(data);
+
     }
 
     // Определяем интерфейс обратного вызова
