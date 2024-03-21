@@ -13,7 +13,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class DataBaseControl {
@@ -70,13 +69,7 @@ public class DataBaseControl {
         ArrayList<User> users = new ArrayList<>();
         getStudentsByEmail(email, users::addAll);
         users.add(newuser);
-        ArrayList<Notification> notifications = new ArrayList<>();
-        notifications.add(new Notification("Пользователь " + email + "добавил вас к своим ученикам"));
-        getNotificationByEmail(newuser.email, v->{
-            notifications.addAll(v);
-            mDatabase.child("users").child(translate(newuser.email)).child("notifications").setValue(notifications);
-
-        });
+        addNotificationForUser("Пользователь " + email + "добавил вас к своим ученикам", newuser.email);
         mDatabase.child("users").child(email).child("students").setValue(users);
     }
 
@@ -111,13 +104,7 @@ public class DataBaseControl {
         getStudentsByEmail(teacher, users::addAll);
         users.removeIf(user -> Objects.equals(user.getEmail(), email));
         mDatabase.child("users").child(teacher).child("students").setValue(users);
-        String finalTeacher = teacher;
-        getUser(email, v ->{
-            ArrayList<Notification> arr = v.notifications;
-            arr.add(new Notification("Преподаватель " + finalTeacher + "удалил вас, как своего студента."));
-            mDatabase.child("users").child(translate(email)).child("notifications").setValue(arr);
-
-        });
+        addNotificationForUser("Преподаватель " + teacher + "удалил вас, как своего студента.", email);
     }
 
     public void deleteNotifyOfUser(List<Notification> data, String user) {
@@ -125,6 +112,11 @@ public class DataBaseControl {
                 child("notifications").setValue(data);
 
     }
+    public void addNotificationForUser(String text, String email){
+        getUser(email, v ->{
 
-    // Определяем интерфейс обратного вызова
+            mDatabase.child("users").child(translate(email)).child("notifications")
+                    .push().setValue(new Notification(text));
+        });
+    }
 }

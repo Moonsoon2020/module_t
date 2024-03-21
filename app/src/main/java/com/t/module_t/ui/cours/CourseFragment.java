@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +34,8 @@ public class CourseFragment extends Fragment {
         binding = FragmentCourseBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Log.i(TAG, "create");
+        ActionBar bar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        bar.setCustomView(R.layout.course_appbar);
         // теперь можем получить наши элементы, расположенные во фрагменте
         RecyclerView recyclerView = root.findViewById(R.id.recycler_course); // тут проверь это меняли
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));

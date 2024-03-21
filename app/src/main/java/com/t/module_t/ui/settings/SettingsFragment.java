@@ -42,10 +42,6 @@ public class SettingsFragment extends Fragment {
                 new ViewModelProvider(this).get(SettingsViewModel.class);
         binding = FragmentSettingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        Bundle bundle = new Bundle();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        Bundle arguments = new Bundle();
         DataBaseControl control = new DataBaseControl();
         ActionBar bar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         bar.setCustomView(R.layout.settings_toolbar);
@@ -54,7 +50,9 @@ public class SettingsFragment extends Fragment {
             if (((User)v).status){
                 EditText email = root.findViewById(R.id.editTextTextEmailAddress);
                 Button button = root.findViewById(R.id.button);
-                RecyclerView recyclerView = root.findViewById(R.id.rec_student); // тут проверь это меняли
+                RecyclerView recyclerView = root.findViewById(R.id.rec_student);email.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                button.setVisibility(View.VISIBLE);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
                 ArrayList<User> courses = new ArrayList<>();
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -95,7 +93,6 @@ public class SettingsFragment extends Fragment {
             } else{
 
             }
-            ft.commit();
         });
         Button button_out = bar.getCustomView().findViewById(R.id.button_settings_toolbar_out);
         button_out.setOnClickListener(v ->{

@@ -2,84 +2,98 @@ package com.t.module_t.ui.notifications;
 
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.t.module_t.R;
-import com.t.module_t.database.DataBaseControl;
-import com.t.module_t.database.User;
 import com.t.module_t.database.Notification;
-import com.t.module_t.listener.OnSwipeTouchListener;
+import com.t.module_t.ui.notifications.listener.ItemTouchHelperViewHolder;
+import com.t.module_t.ui.notifications.listener.OnStartDragListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapter.ViewHolder>{
 
-    private final LayoutInflater inflater;
-    private final List<Notification> list;
-    private final String TAG = "NotificationAdapter";
-    private final String user;
+public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ItemViewHolder>
+         {
 
-    public NotificationAdapter(Context context, List<Notification> list, String user) {
-        this.user = user;
-        this.list = list;
-        this.inflater = LayoutInflater.from(context);
-    }
-    @NonNull
-    @Override
-    public com.t.module_t.ui.notifications.NotificationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    private List<Notification> mItems = new ArrayList<>();
+    private final OnStartDragListener mDragStartListener;
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_fragment ,parent, false);
-        return new NotificationAdapter.ViewHolder(view);
+    public NotificationAdapter(Context context, OnStartDragListener dragStartListener, List<Notification> mItems) {
+        mDragStartListener = dragStartListener;
+        this.mItems = mItems;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Notification notification = list.get(position);
+    public NotificationAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_fragment, parent, false);
+        NotificationAdapter.ItemViewHolder itemViewHolder = new NotificationAdapter.ItemViewHolder(view);
+
+        return itemViewHolder;
+    }
+
+
+
+    @Override
+    public void onBindViewHolder(@NonNull NotificationAdapter.ItemViewHolder holder, int position) {
+        Notification notification = mItems.get(position);
         holder.data = notification;
         holder.textView.setText(notification.text);
         holder.dateView.setText(notification.date.toString());
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
+
+    public void onItemDismiss(int position) {
+        mItems.remove(position);
+        notifyItemRemoved(position);
+
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView textView, dateView;
-        private Notification data;
+     public List<Notification> getmItems() {
+         return mItems;
+     }
 
-        ViewHolder(View view){
-            super(view);
-            DataBaseControl control = new DataBaseControl();
-            textView = view.findViewById(R.id.textView_fragment_notify);
-            dateView = view.findViewById(R.id.textView_fragment_notify_data);
-            view.setOnTouchListener(new OnSwipeTouchListener(view.getContext()) {
-                public void onSwipeTop() {
-//                    Toast.makeText(view.getContext(), "top", Toast.LENGTH_SHORT).show();
-                }
-                public void onSwipeRight() {
-//                    Toast.makeText(view.getContext(), "right", Toast.LENGTH_SHORT).show();
-                }
-                public void onSwipeLeft() {
-                    list.remove(data);
-                    control.deleteNotifyOfUser(list, user);
-                    notifyDataSetChanged();
-                    Toast.makeText(view.getContext(), "left", Toast.LENGTH_SHORT).show();
-                }
-                public void onSwipeBottom() {
-//                    Toast.makeText(view.getContext(), "bottom", Toast.LENGTH_SHORT).show();
-                }
+     public boolean onItemMove(int fromPosition, int toPosition) {
+        Collections.swap(mItems, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
 
-            });
+    @Override
+    public int getItemCount() {
+        return mItems.size();
+    }
+
+    public static class ItemViewHolder extends RecyclerView.ViewHolder implements
+            ItemTouchHelperViewHolder {
+
+        public final TextView textView;
+        public final TextView dateView;
+        public Notification data;
+
+
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+            textView = (TextView) itemView.findViewById(R.id.textView_fragment_notify);
+            dateView = (TextView) itemView.findViewById(R.id.textView_fragment_notify_data);
+
+        }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
         }
     }
 }

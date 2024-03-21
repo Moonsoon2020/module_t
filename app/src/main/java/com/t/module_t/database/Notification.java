@@ -6,12 +6,13 @@ import androidx.annotation.Nullable;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
 
-public class Notification {
+public class Notification{
     public String text;
     public Date date;
 
@@ -19,22 +20,22 @@ public class Notification {
         date = new Date();
         this.text = text;
     }
-    Notification(String text, HashMap<String, Long> data){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, data.get("year").intValue() - 100);
-        calendar.set(Calendar.MONTH, data.get("month").intValue());
-        calendar.set(Calendar.DAY_OF_MONTH, data.get("date").intValue());
-        calendar.set(Calendar.HOUR_OF_DAY, data.get("hours").intValue());
-        calendar.set(Calendar.MINUTE, data.get("minutes").intValue());
-        calendar.set(Calendar.SECOND, data.get("seconds").intValue());
-        // Получение объекта Date из Calendar
-        Date dateObject = calendar.getTime();
-        this.date = dateObject;
+    public Notification(String text, HashMap<String, Long> data) {
+        int year = data.get("year").intValue();
+        int month = data.get("month").intValue(); // Учитываем, что месяцы начинаются с 0
+        int day = data.get("date").intValue();
+        int hour = data.get("hours").intValue();
+        int minute = data.get("minutes").intValue();
+        int second = data.get("seconds").intValue();
+
         this.text = text;
+        this.date = new Date(year, month, day, hour, minute, second); // Год начинается с 1900
     }
     @Override
-    public boolean equals(@Nullable Object obj) {
-        Notification ob = (Notification) obj;
-        return ob.date == date && Objects.equals(ob.text, text);
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Notification that = (Notification) obj;
+        return Objects.equals(text, that.text) && Objects.equals(date, that.date);
     }
 }

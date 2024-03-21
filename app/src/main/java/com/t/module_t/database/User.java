@@ -8,10 +8,9 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class User {
+public class User{
     public String username;
     public String email;
-    private String password;
     public boolean status;
     public ArrayList<User> students = new ArrayList<>();
     public ArrayList<Notification> notifications = new ArrayList<>();
@@ -39,13 +38,17 @@ public class User {
                 this.students.add(new User(username, email, status));
             }
         }
-
+        HashMap<String, HashMap<String, Object>> notificationsMap = (HashMap<String, HashMap<String, Object>>) map.get("notifications");
         // Обработка списка уведомлений
-        if (map.get("notifications") != null) {
-            ArrayList<HashMap<String, Object>> notificationList = (ArrayList<HashMap<String, Object>>) map.get("notifications");
-            for (HashMap<String, Object> notificationMap : notificationList) {
+        if (notificationsMap != null) {
+            for (HashMap.Entry<String, HashMap<String, Object>> entry : notificationsMap.entrySet()) {
+                HashMap<String, Object> notificationMap = entry.getValue();
                 String text = (String) notificationMap.get("text");
-                this.notifications.add(new Notification(text, (HashMap<String, Long>) notificationMap.get("date")));
+                HashMap<String, Long> dateMap = (HashMap<String, Long>) notificationMap.get("date");
+
+                // Создаем объект Notification и добавляем его в список
+                Notification notification = new Notification(text, dateMap);
+                notifications.add(notification);
             }
         }
     }
