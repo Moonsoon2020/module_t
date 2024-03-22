@@ -12,8 +12,10 @@ public class User{
     public String username;
     public String email;
     public boolean status;
+    public String like_course;
     public ArrayList<User> students = new ArrayList<>();
     public ArrayList<Notification> notifications = new ArrayList<>();
+    public ArrayList<String> id_courses = new ArrayList<>();
 
     public User(String username, String email, boolean status) {
         this.username = username;
@@ -25,7 +27,13 @@ public class User{
         this.username = map.get("username").toString();
         this.email = map.get("email").toString();
         this.status = Boolean.parseBoolean(map.get("status").toString());
-
+        this.like_course = map.get("like_course").toString();
+        HashMap<String, String> coursesMap = (HashMap<String, String>) map.get("courses");
+        if (coursesMap != null) {
+            for (String courseId : coursesMap.values()) {
+                id_courses.add(courseId);
+            }
+        }
         // Обработка списка студентов
         if (map.get("students") != null) {
             String stud = map.get("students").toString();
@@ -38,15 +46,11 @@ public class User{
                 this.students.add(new User(username, email, status));
             }
         }
-        HashMap<String, HashMap<String, Object>> notificationsMap = (HashMap<String, HashMap<String, Object>>) map.get("notifications");
-        // Обработка списка уведомлений
-        if (notificationsMap != null) {
-            for (HashMap.Entry<String, HashMap<String, Object>> entry : notificationsMap.entrySet()) {
-                HashMap<String, Object> notificationMap = entry.getValue();
+        ArrayList<HashMap<String, Object>> notificationsList = (ArrayList<HashMap<String, Object>>) map.get("notifications");
+        if (notificationsList != null) {
+            for (HashMap<String, Object> notificationMap : notificationsList) {
                 String text = (String) notificationMap.get("text");
                 HashMap<String, Long> dateMap = (HashMap<String, Long>) notificationMap.get("date");
-
-                // Создаем объект Notification и добавляем его в список
                 Notification notification = new Notification(text, dateMap);
                 notifications.add(notification);
             }

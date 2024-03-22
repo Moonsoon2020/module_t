@@ -32,6 +32,10 @@
             android:exported="true"
             android:label="@string/app_name">
         </activity>
+        <activity android:name=".new_course.NewCourse"
+            android:exported="true">
+
+        </activity>
     </application>
 
 </manifest>

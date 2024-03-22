@@ -14,13 +14,13 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.t.module_t.ui.cours.CourseFragment"
-        android:label="@string/title_course"
+        android:label="Курсы"
         tools:layout="@layout/fragment_course" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.t.module_t.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="Уведомления"
         tools:layout="@layout/fragment_notifications" />
 
     <fragment
