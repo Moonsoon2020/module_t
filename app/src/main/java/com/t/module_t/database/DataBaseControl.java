@@ -126,8 +126,8 @@ public class DataBaseControl {
 
     public void addCourse(String name, String email) {
         email = translate(email);
-        Course course = new Course(name);
-        String key = mDatabase.child("course").push().getKey(); // Генерируем уникальный ключ
+        String key = mDatabase.child("course").push().getKey();
+        Course course = new Course(name, key);
         mDatabase.child("course").child(key).setValue(course); // Добавляем новый курс с использованием сгенерированного ключа
         ArrayList<String> arr = new ArrayList<>();
         arr.add(key);

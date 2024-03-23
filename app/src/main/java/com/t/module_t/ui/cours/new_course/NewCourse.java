@@ -1,4 +1,4 @@
-package com.t.module_t.new_course;
+package com.t.module_t.ui.cours.new_course;
 
 import android.os.Bundle;
 import android.widget.Button;
