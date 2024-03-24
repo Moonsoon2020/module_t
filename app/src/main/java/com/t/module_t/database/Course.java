@@ -1,10 +1,12 @@
 package com.t.module_t.database;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Course {
     private String courseName;
     public String id_course;
+    public ArrayList<String> items;
     // Другие свойства
 
     public Course() {

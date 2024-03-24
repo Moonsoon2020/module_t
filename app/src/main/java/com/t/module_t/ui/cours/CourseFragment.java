@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
@@ -36,6 +37,8 @@ public class CourseFragment extends Fragment {
     private final String TAG = "CourseFragment";
     private FragmentCourseBinding binding;
     private Spinner spinner;
+    private DataBaseControl control;
+    private ArrayList<String> items_id_course;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,9 +52,9 @@ public class CourseFragment extends Fragment {
         if (bar != null) {
             bar.setCustomView(R.layout.course_appbar);
             bar.setDisplayShowCustomEnabled(true);
-            DataBaseControl control = new DataBaseControl();
+            control = new DataBaseControl();
             spinner = bar.getCustomView().findViewById(R.id.spinner);
-            ArrayList<String> items_id_course = new ArrayList<>();
+            items_id_course = new ArrayList<>();
 
             ArrayList<String> items = new ArrayList<>();
             Spinner spinner = bar.getCustomView().findViewById(R.id.spinner);
@@ -111,6 +114,25 @@ public class CourseFragment extends Fragment {
         courses.add(new CourseElement("ghbdtn"));
         CourseAdapter courseAdapter = new CourseAdapter(requireActivity(), courses);
         recyclerView.setAdapter(courseAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                DataBaseControl control = new DataBaseControl();
+                control.getCourse(items_id_course.get(position), v ->{
+//                    for (:
+//                         ) {
+//
+//                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                Log.d(TAG, "ppp");
+            }
+
+        });
+
         return root;
     }
 
@@ -118,6 +140,10 @@ public class CourseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        if (spinner.getSelectedItem() == null)
+            return;
+        if (spinner.getSelectedItem().toString().isEmpty())
+            return;
         new DataBaseControl().set_like_item_course(FirebaseAuth.getInstance().getCurrentUser().getEmail(), spinner.getSelectedItem().toString());
     }
 }

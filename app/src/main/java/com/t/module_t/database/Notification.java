@@ -1,20 +1,17 @@
 package com.t.module_t.database;
 
-import android.text.format.Time;
-
-import androidx.annotation.Nullable;
+import android.health.connect.datatypes.units.Length;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.TimeZone;
+import java.util.logging.Level;
 
 public class Notification{
     public String text;
+    public String id_notifications;
     public Date date;
     public static String splitString(String inputString, int maxCharactersPerLine) {
         String[] words = inputString.split("\\s+"); // Разбиваем строку на слова
@@ -50,18 +47,19 @@ public class Notification{
         return result.toString();
     }
 
-    public Notification(String text){
+    public Notification(String text, String id_notifications){
         date = new Date();
+        this.id_notifications = id_notifications;
         this.text = splitString(text, 20);
     }
-    public Notification(String text, HashMap<String, Long> data) {
-        int year = data.get("year").intValue();
-        int month = data.get("month").intValue(); // Учитываем, что месяцы начинаются с 0
-        int day = data.get("date").intValue();
-        int hour = data.get("hours").intValue();
-        int minute = data.get("minutes").intValue();
-        int second = data.get("seconds").intValue();
-
+    public Notification(String text, String id_notifications, HashMap<String,Object> data) {
+        int year = ((Long)data.get("year")).intValue();
+        int month = ((Long)data.get("month")).intValue(); // Учитываем, что месяцы начинаются с 0
+        int day = ((Long)data.get("date")).intValue();
+        int hour = ((Long)data.get("hours")).intValue();
+        int minute = ((Long)data.get("minutes")).intValue();
+        int second = ((Long)data.get("seconds")).intValue();
+        this.id_notifications = id_notifications;
         this.text = splitString(text, 20);
         this.date = new Date(year, month, day, hour, minute, second); // Год начинается с 1900
     }

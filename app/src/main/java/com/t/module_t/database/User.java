@@ -3,12 +3,13 @@ package com.t.module_t.database;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class User{
+public class User {
     public String username;
     public String email;
     public boolean status;
@@ -23,11 +24,12 @@ public class User{
         this.status = status;
     }
 
-    public User(HashMap<String, Object> map){
+    public User(HashMap<String, Object> map) {
         this.username = map.get("username").toString();
         this.email = map.get("email").toString();
         this.status = Boolean.parseBoolean(map.get("status").toString());
-        this.like_course = map.get("like_course").toString();
+        if (map.containsKey("like_course"))
+            this.like_course = map.get("like_course").toString();
         HashMap<String, String> coursesMap = (HashMap<String, String>) map.get("courses");
         if (coursesMap != null) {
             for (String courseId : coursesMap.values()) {
@@ -35,24 +37,24 @@ public class User{
             }
         }
         // Обработка списка студентов
-        if (map.get("students") != null) {
-            String stud = map.get("students").toString();
-            Pattern pattern = Pattern.compile("email=(.*?),\\s*notifications=(.*?),\\s*status=(.*?),\\s*username=(.*?)\\}");
-            Matcher matcher = pattern.matcher(stud);
-            while (matcher.find()) {
-                String email = matcher.group(1);
-                boolean status = Boolean.parseBoolean(matcher.group(3));
-                String username = matcher.group(4);
-                this.students.add(new User(username, email, status));
+        if (map.containsKey("students")) {
+            ArrayList<HashMap<String, Object>> studentsList = (ArrayList<HashMap<String, Object>>) map.get("students");
+            for (HashMap<String, Object> studentMap : studentsList) {
+                String email = (String) studentMap.get("email");
+                boolean status = (boolean) studentMap.get("status");
+                String username = (String) studentMap.get("username");
+                students.add(new User(username, email, status));
             }
         }
-        ArrayList<HashMap<String, Object>> notificationsList = (ArrayList<HashMap<String, Object>>) map.get("notifications");
-        if (notificationsList != null) {
-            for (HashMap<String, Object> notificationMap : notificationsList) {
-                String text = (String) notificationMap.get("text");
-                HashMap<String, Long> dateMap = (HashMap<String, Long>) notificationMap.get("date");
-                Notification notification = new Notification(text, dateMap);
-                notifications.add(notification);
+        if (map.containsKey("notifications")) {
+            HashMap<String, Object> data = (HashMap<String, Object>) map.get("notifications");
+            // Проход по каждой записи в данных уведомлений
+            for (HashMap.Entry<String, Object> entry : data.entrySet()) {
+                HashMap<String, Object> notificationData = (HashMap<String, Object>) entry.getValue();
+                HashMap<String, Object> notificationMap = (HashMap<String, Object>) notificationData.get("date");
+                String text = (String) notificationData.get("text");
+                String id_notifications = notificationData.get("id_notifications").toString();
+                notifications.add(new Notification(text, id_notifications,notificationMap));
             }
         }
     }

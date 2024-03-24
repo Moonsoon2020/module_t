@@ -53,7 +53,7 @@ public class NotificationsFragment extends Fragment implements OnStartDragListen
         recyclerView.setAdapter(adapter);
         ImageButton all_delete_button = bar.getCustomView().findViewById(R.id.image_button_app_bar_notify_delete_all);
         all_delete_button.setOnClickListener(v ->{
-            control.deleteNotifyOfUser(new ArrayList<Notification>(), FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            control.deleteAllNotifyOfUser(FirebaseAuth.getInstance().getCurrentUser().getEmail());
             array.clear();
             adapter.notifyDataSetChanged();
         });

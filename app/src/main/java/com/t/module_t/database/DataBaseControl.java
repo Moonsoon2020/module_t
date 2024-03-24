@@ -36,8 +36,8 @@ public class DataBaseControl {
     public void addUser(String email, String name, Boolean status, String id) {
         email = translate(email);
         User user = new User(name, email, status);
-        user.notifications.add(new Notification("Привет, это уведомление о регистрации, рады, что ты с нами."));
         mDatabase.child("users").child(email).setValue(user);
+        addNotificationForUser("Привет, поздравляю с регистрацией", email);
     }
 
     public void getUser(String email, final UserCallback callback) {
@@ -111,17 +111,16 @@ public class DataBaseControl {
         addNotificationForUser("Преподаватель " + teacher + " удалил вас, как своего студента.", email);
     }
 
-    public void deleteNotifyOfUser(List<Notification> data, String user) {
+    public void deleteNotifyOfUser(Notification data, String user) {
         mDatabase.child("users").child(translate(user)).
-                child("notifications").setValue(data);
+                child("notifications").child(data.id_notifications).removeValue();
 
     }
     public void addNotificationForUser(String text, String email){
-        getUser(email, v ->{
-
-            mDatabase.child("users").child(translate(email)).child("notifications")
-                    .push().setValue(new Notification(text));
-        });
+         Notification notification = new Notification(text, mDatabase.child("users").child(translate(email)).child("notifications")
+                 .push().getKey());
+        mDatabase.child("users").child(translate(email)).child("notifications")
+                .child(notification.id_notifications).setValue(notification);
     }
 
     public void addCourse(String name, String email) {
@@ -132,7 +131,7 @@ public class DataBaseControl {
         ArrayList<String> arr = new ArrayList<>();
         arr.add(key);
         // Добавляем новый курс в список курсов пользователя, используя сгенерированный ключ
-        mDatabase.child("users").child(email).child("courses").push().setValue(key);
+        mDatabase.child("users").child(email).child("courses").child(key).setValue(key);
     }
 
     public void getNameCoursesOnUser(String email, ArrayStringCallback callback) {
@@ -196,5 +195,23 @@ public class DataBaseControl {
 
     public void set_like_item_course(String email, String string) {
         mDatabase.child("users").child(translate(email)).child("like_course").setValue(string);
+    }
+
+    public void addUserOnCourse(User user, String id) {
+        String email = translate(user.email);
+        mDatabase.child("course").child(id).child("students").child(email).setValue(true);
+        mDatabase.child("users").child(email).child("courses").child(id).setValue(id);
+        addNotificationForUser("Вам открыли доступ к новому курсу", user.email);
+    }
+
+    public void deleteUserOnCourse(User user, String id) {
+        mDatabase.child("course").child(id).child("students").child(translate(user.email)).removeValue();
+        mDatabase.child("users").child(translate(user.email)).child("courses").child(id).removeValue();
+        addNotificationForUser("Вам закрыли доступ к курсу", user.email);
+    }
+
+    public void deleteAllNotifyOfUser(String email) {
+        mDatabase.child("users").child(translate(email)).
+                child("notifications").removeValue();
     }
 }
