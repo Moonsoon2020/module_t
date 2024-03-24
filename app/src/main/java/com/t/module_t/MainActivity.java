@@ -1,35 +1,17 @@
 package com.t.module_t;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.Firebase;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.t.module_t.database.DataBaseControl;
 import com.t.module_t.databinding.ActivityMainBinding;
-import com.t.module_t.ui.cours.CourseAdapter;
-import com.t.module_t.ui.cours.CourseElement;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";

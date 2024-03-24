@@ -44,6 +44,7 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.ViewHo
     public void onBindViewHolder(StudentsAdapter.ViewHolder holder, int position) {
         User user = list.get(position);
         holder.nameView.setText(user.username + " " + user.email);
+        holder.aSwitch.setChecked(check_id(user));
         holder.aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -54,6 +55,14 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.ViewHo
                 }
             }
         });
+    }
+    private boolean check_id(User user){
+        for (String string:user.id_courses) {
+            if (string.equals(id_course)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

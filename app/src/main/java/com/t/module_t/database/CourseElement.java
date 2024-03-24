@@ -1,8 +1,8 @@
-package com.t.module_t.ui.cours;
+package com.t.module_t.database;
 
 public class CourseElement {
 
-    private String name; // название
+    private String name;
     public CourseElement(String name){
 
         this.name=name;

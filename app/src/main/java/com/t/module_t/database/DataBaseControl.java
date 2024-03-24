@@ -14,10 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 public class DataBaseControl {
     private String TAG = "DataBaseControl";
@@ -58,23 +55,33 @@ public class DataBaseControl {
         });
     }
 
-    public void getStudentsByEmail(String email, final UserArrayCallback callback) {
+    public void getStudentsEmailByEmail(String email, final UserEmailArrayCallback callback) {
         getUser(email, v -> {
             if (v != null)
-                callback.onUserArrayFetch(v.getStudents());
+                callback.onUserEmailArrayFetch(v.getStudents());
             else
-                callback.onUserArrayFetch(new ArrayList<User>());
+                callback.onUserEmailArrayFetch(new ArrayList<String>());
+        });
+    }
+    public void getStudentsByEmail(String email, final UserArrayCallback callback) {
+        ArrayList<User> arr = new ArrayList<>();
+        getStudentsEmailByEmail(email, emails->{
+            for (String i: emails){
+                getUser(i, userData -> {
+                    arr.add(userData);
+                    if (arr.size() == emails.size())
+                        callback.onUserArrayFetch(arr);
+                });
+            }
+
         });
     }
 
     public void updateTeacherByNewStudent(String email, User newuser) {
         Log.d(TAG, email);
-        email = translate(email);
-        ArrayList<User> users = new ArrayList<>();
-        getStudentsByEmail(email, users::addAll);
-        users.add(newuser);
         addNotificationForUser("Пользователь " + email + " добавил вас к своим ученикам", newuser.email);
-        mDatabase.child("users").child(email).child("students").setValue(users);
+        mDatabase.child("users").child(translate(email)).child("students").
+                child(translate(newuser.email)).setValue(translate(newuser.email));
     }
 
     public void getNotificationByEmail(String email,  final NotificationArrayCallback callback) {
@@ -90,8 +97,8 @@ public class DataBaseControl {
     public void checkUserInStudentsByEmail(String email, User userData, BoolCallback callback) {
         getUser(email, v -> {
             if (v != null) {
-                for (User user : v.students) {
-                    if (Objects.equals(user.getEmail(), userData.getEmail())) {
+                for (String user : v.students) {
+                    if (Objects.equals(user, userData.getEmail())) {
                         callback.onBoolFetch(false);
                         return;
                     }
@@ -103,11 +110,8 @@ public class DataBaseControl {
     }
 
     public void deleteUserOfStudents(String teacher, String email) {
-        teacher = translate(teacher);
-        ArrayList<User> users = new ArrayList<>();
-        getStudentsByEmail(teacher, users::addAll);
-        users.removeIf(user -> Objects.equals(user.getEmail(), email));
-        mDatabase.child("users").child(teacher).child("students").setValue(users);
+        mDatabase.child("users").child(translate(teacher)).child("students").
+                child(translate(email)).removeValue();
         addNotificationForUser("Преподаватель " + teacher + " удалил вас, как своего студента.", email);
     }
 

@@ -3,18 +3,15 @@ package com.t.module_t.database;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class User {
     public String username;
+
     public String email;
     public boolean status;
     public String like_course;
-    public ArrayList<User> students = new ArrayList<>();
+    public ArrayList<String> students = new ArrayList<>();
     public ArrayList<Notification> notifications = new ArrayList<>();
     public ArrayList<String> id_courses = new ArrayList<>();
 
@@ -37,14 +34,9 @@ public class User {
             }
         }
         // Обработка списка студентов
-        if (map.containsKey("students")) {
-            ArrayList<HashMap<String, Object>> studentsList = (ArrayList<HashMap<String, Object>>) map.get("students");
-            for (HashMap<String, Object> studentMap : studentsList) {
-                String email = (String) studentMap.get("email");
-                boolean status = (boolean) studentMap.get("status");
-                String username = (String) studentMap.get("username");
-                students.add(new User(username, email, status));
-            }
+        HashMap<String, String> studentsMap = (HashMap<String, String>) map.get("students");
+        if (studentsMap != null) {
+            for (String student_email : studentsMap.values()) students.add(student_email);
         }
         if (map.containsKey("notifications")) {
             HashMap<String, Object> data = (HashMap<String, Object>) map.get("notifications");
@@ -59,7 +51,7 @@ public class User {
         }
     }
 
-    public ArrayList<User> getStudents() {
+    public ArrayList<String> getStudents() {
         return students;
     }
 

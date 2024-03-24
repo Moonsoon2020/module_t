@@ -24,10 +24,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.t.module_t.database.CourseElement;
 import com.t.module_t.ui.cours.new_course.NewCourse;
 import com.t.module_t.R;
 import com.t.module_t.database.DataBaseControl;
-import com.t.module_t.database.User;
 import com.t.module_t.databinding.FragmentCourseBinding;
 import com.t.module_t.ui.cours.new_course.SettingsCourse;
 
@@ -39,6 +39,10 @@ public class CourseFragment extends Fragment {
     private Spinner spinner;
     private DataBaseControl control;
     private ArrayList<String> items_id_course;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter courseAdapter;
+    private ArrayList<CourseElement> courses = new ArrayList<>();
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -86,14 +90,16 @@ public class CourseFragment extends Fragment {
             });
 
             control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), user -> {
-                if (((User) user).status) {
+                courseAdapter = new CourseAdapter(requireActivity(), courses, user);
+                recyclerView.setAdapter(courseAdapter);
+                if (user.status) {
                     ImageButton imageButton_add = bar.getCustomView().findViewById(R.id.image_button_course_add);
                     ImageButton imageButton_set = bar.getCustomView().findViewById(R.id.imagebutton_course_settings);
                     try {
                         imageButton_set.setVisibility(View.VISIBLE);
                         imageButton_add.setVisibility(View.VISIBLE);
                         imageButton_set.setOnClickListener(v -> {
-                            Intent intent  = new Intent(requireActivity(), SettingsCourse.class);
+                            Intent intent = new Intent(requireActivity(), SettingsCourse.class);
                             intent.putExtra("id_course", items_id_course.get(spinner.getSelectedItemPosition()));
                             startActivity(intent);
                         });
@@ -108,19 +114,16 @@ public class CourseFragment extends Fragment {
                 }
             });
         }
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_course);
+        recyclerView = root.findViewById(R.id.recycler_course);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
-        ArrayList<CourseElement> courses = new ArrayList<>();
         courses.add(new CourseElement("ghbdtn"));
-        CourseAdapter courseAdapter = new CourseAdapter(requireActivity(), courses);
-        recyclerView.setAdapter(courseAdapter);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 DataBaseControl control = new DataBaseControl();
-                control.getCourse(items_id_course.get(position), v ->{
-//                    for (:
-//                         ) {
+                control.getCourse(items_id_course.get(position), course ->{
+//                    for (String item : course.items) {
 //
 //                    }
                 });

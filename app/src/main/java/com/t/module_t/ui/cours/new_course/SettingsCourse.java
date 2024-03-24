@@ -31,8 +31,8 @@ public class SettingsCourse extends AppCompatActivity {
         StudentsAdapter adapter = new StudentsAdapter(this, array, intent.getStringExtra("id_course"));
         recyclerView.setAdapter(adapter);
         DataBaseControl control = new DataBaseControl();
-        control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData -> {
-            array.addAll(userData.students);
+        control.getStudentsByEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData -> {
+            array.addAll(userData);
             adapter.notifyDataSetChanged();
         });
 
