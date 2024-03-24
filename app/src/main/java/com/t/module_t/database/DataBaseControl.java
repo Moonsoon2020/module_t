@@ -127,7 +127,7 @@ public class DataBaseControl {
                 .child(notification.id_notifications).setValue(notification);
     }
 
-    public void addCourse(String name, String email) {
+    public String addCourse(String name, String email) {
         email = translate(email);
         String key = mDatabase.child("course").push().getKey();
         Course course = new Course(name, key);
@@ -136,6 +136,7 @@ public class DataBaseControl {
         arr.add(key);
         // Добавляем новый курс в список курсов пользователя, используя сгенерированный ключ
         mDatabase.child("users").child(email).child("courses").child(key).setValue(key);
+        return key;
     }
 
     public void getNameCoursesOnUser(String email, ArrayStringCallback callback) {
@@ -217,5 +218,9 @@ public class DataBaseControl {
     public void deleteAllNotifyOfUser(String email) {
         mDatabase.child("users").child(translate(email)).
                 child("notifications").removeValue();
+    }
+
+    public void updateCourseOnNewNote(String title, String email, String id_course) {
+        mDatabase.child("course").child(id_course).child("items").push().setValue(title);
     }
 }

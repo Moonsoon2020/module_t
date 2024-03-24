@@ -49,10 +49,11 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
     implementation("com.google.firebase:firebase-analytics")
-    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.android.gms:play-services-base:18.3.0")
-
+    implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-auth")
+    implementation ("org.greenrobot:eventbus:3.2.0")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.gms:google-services:4.4.1")
     implementation("androidx.mediarouter:mediarouter:1.6.0")

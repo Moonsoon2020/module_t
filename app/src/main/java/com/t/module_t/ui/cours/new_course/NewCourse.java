@@ -1,5 +1,6 @@
 package com.t.module_t.ui.cours.new_course;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +22,11 @@ public class NewCourse extends AppCompatActivity {
         button.setOnClickListener(v -> {
             String name = editText.getText().toString();
             DataBaseControl control = new DataBaseControl();
-            control.addCourse(name, FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            String id = control.addCourse(name, FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("item", name);
+            resultIntent.putExtra("id", id);
+            setResult(RESULT_OK, resultIntent);
             finish();
         });
     }

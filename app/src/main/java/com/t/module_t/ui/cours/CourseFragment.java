@@ -1,5 +1,8 @@
 package com.t.module_t.ui.cours;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -25,11 +29,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.t.module_t.database.CourseElement;
+import com.t.module_t.database.User;
 import com.t.module_t.ui.cours.new_course.NewCourse;
 import com.t.module_t.R;
 import com.t.module_t.database.DataBaseControl;
 import com.t.module_t.databinding.FragmentCourseBinding;
 import com.t.module_t.ui.cours.new_course.SettingsCourse;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -42,7 +51,8 @@ public class CourseFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter courseAdapter;
     private ArrayList<CourseElement> courses = new ArrayList<>();
-
+    private User user;
+    ArrayList<String> items;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,17 +67,18 @@ public class CourseFragment extends Fragment {
             bar.setCustomView(R.layout.course_appbar);
             bar.setDisplayShowCustomEnabled(true);
             control = new DataBaseControl();
-            spinner = bar.getCustomView().findViewById(R.id.spinner);
             items_id_course = new ArrayList<>();
+            EventBus.getDefault().register(this);
 
-            ArrayList<String> items = new ArrayList<>();
-            Spinner spinner = bar.getCustomView().findViewById(R.id.spinner);
+            items = new ArrayList<>();
+            spinner = bar.getCustomView().findViewById(R.id.spinner);
             AdapterCourseBar adapter = new AdapterCourseBar(getContext(),
                     android.R.layout.simple_spinner_item, items);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), user -> {
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                this.user = user;
                 for (String i : user.id_courses) {
                     mDatabase.child("course").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -90,8 +101,6 @@ public class CourseFragment extends Fragment {
             });
 
             control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), user -> {
-                courseAdapter = new CourseAdapter(requireActivity(), courses, user);
-                recyclerView.setAdapter(courseAdapter);
                 if (user.status) {
                     ImageButton imageButton_add = bar.getCustomView().findViewById(R.id.image_button_course_add);
                     ImageButton imageButton_set = bar.getCustomView().findViewById(R.id.imagebutton_course_settings);
@@ -105,7 +114,7 @@ public class CourseFragment extends Fragment {
                         });
                         imageButton_add.setOnClickListener(v -> {
                             Intent intent = new Intent(requireActivity(), NewCourse.class);
-                            startActivity(intent);
+                            startActivityForResult(intent, 101);
                         });
                     } catch (NullPointerException e) {
                         Log.e(TAG, "Exception: " + e);
@@ -116,16 +125,18 @@ public class CourseFragment extends Fragment {
         }
         recyclerView = root.findViewById(R.id.recycler_course);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
-        courses.add(new CourseElement("ghbdtn"));
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                courses.clear();
+                courseAdapter = new CourseAdapter(requireActivity(), courses, user, items_id_course.get(position));
+                recyclerView.setAdapter(courseAdapter);
                 DataBaseControl control = new DataBaseControl();
-                control.getCourse(items_id_course.get(position), course ->{
-//                    for (String item : course.items) {
-//
-//                    }
+                control.getCourse(items_id_course.get(position), course -> {
+                    for (String item : course.items) {
+                        courses.add(new CourseElement(item));
+                    }
+                    courseAdapter.notifyDataSetChanged();
                 });
             }
 
@@ -140,6 +151,20 @@ public class CourseFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101 && resultCode == Activity.RESULT_OK) {
+            // Получение результата из активити, которая была запущена из адаптера RecyclerView
+            if (data != null) {
+                items.add(data.getStringExtra("item"));
+                items_id_course.add(data.getStringExtra("id"));
+                spinner.setSelection(items_id_course.size()-1);
+                courseAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
@@ -148,5 +173,11 @@ public class CourseFragment extends Fragment {
         if (spinner.getSelectedItem().toString().isEmpty())
             return;
         new DataBaseControl().set_like_item_course(FirebaseAuth.getInstance().getCurrentUser().getEmail(), spinner.getSelectedItem().toString());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNoteEvent(String event) {
+        courses.add(new CourseElement(event));
+        courseAdapter.notifyDataSetChanged();
     }
 }
