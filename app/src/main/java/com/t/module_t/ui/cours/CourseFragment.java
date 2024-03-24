@@ -93,7 +93,7 @@ public class CourseFragment extends Fragment {
                         imageButton_set.setVisibility(View.VISIBLE);
                         imageButton_add.setVisibility(View.VISIBLE);
                         imageButton_set.setOnClickListener(v -> {
-                            Intent intent = new Intent(requireActivity(), SettingsCourse.class);
+                            Intent intent  = new Intent(requireActivity(), SettingsCourse.class);
                             intent.putExtra("id_course", items_id_course.get(spinner.getSelectedItemPosition()));
                             startActivity(intent);
                         });
