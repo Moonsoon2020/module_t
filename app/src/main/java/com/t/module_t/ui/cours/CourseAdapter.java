@@ -2,6 +2,7 @@ package com.t.module_t.ui.cours;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.t.module_t.CreateNote;
 import com.t.module_t.R;
 import com.t.module_t.database.CourseElement;
+import com.t.module_t.database.StorageControl;
 import com.t.module_t.database.User;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.FileNameMap;
+import java.net.URLConnection;
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -71,11 +78,26 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 CourseElement state = states.get(position);
                 hold.nameView.setText(state.getName());
                 hold.button.setOnClickListener(v -> {
-                    if (user.status) {
+                    StorageControl control = new StorageControl(user.email, id_course);
+                    try {
+                        control.getFile(hold.nameView.getText().toString(), file -> {
+                            Uri fileUri = FileProvider.getUriForFile(
+                                    inflater.getContext(),
+                                    inflater.getContext().getApplicationContext().getPackageName() + ".provider",
+                                    file.file);
 
-                    } else {
 
+
+                            Intent openFileIntent = new Intent(Intent.ACTION_VIEW);
+                            openFileIntent.setDataAndType(fileUri, file.type); // здесь могут быть любые файлы
+                            openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            inflater.getContext().startActivity(openFileIntent);
+                        });
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+
+
                 });
                 break;
             }
@@ -89,6 +111,12 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 break;
             }
         }
+    }
+
+    private String getMimeTypeFromFile(File file) {
+        FileNameMap fileNameMap = URLConnection.getFileNameMap();
+        String mimeType = fileNameMap.getContentTypeFor(file.getName());
+        return mimeType;
     }
 
     @Override

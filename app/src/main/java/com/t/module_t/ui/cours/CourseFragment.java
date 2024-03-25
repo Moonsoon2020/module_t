@@ -1,7 +1,5 @@
 package com.t.module_t.ui.cours;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,12 +26,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.t.module_t.database.CourseElement;
-import com.t.module_t.database.User;
-import com.t.module_t.ui.cours.new_course.NewCourse;
 import com.t.module_t.R;
+import com.t.module_t.database.CourseElement;
 import com.t.module_t.database.DataBaseControl;
+import com.t.module_t.database.User;
 import com.t.module_t.databinding.FragmentCourseBinding;
+import com.t.module_t.ui.cours.new_course.NewCourse;
 import com.t.module_t.ui.cours.new_course.SettingsCourse;
 
 import org.greenrobot.eventbus.EventBus;
@@ -159,7 +157,8 @@ public class CourseFragment extends Fragment {
                 items.add(data.getStringExtra("item"));
                 items_id_course.add(data.getStringExtra("id"));
                 spinner.setSelection(items_id_course.size()-1);
-                courseAdapter.notifyDataSetChanged();
+                if (courseAdapter != null)
+                    courseAdapter.notifyDataSetChanged();
             }
         }
     }

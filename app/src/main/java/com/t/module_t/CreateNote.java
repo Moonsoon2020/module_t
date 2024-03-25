@@ -33,13 +33,17 @@ public class CreateNote extends AppCompatActivity {
         });
         Button button_start = findViewById(R.id.button3);
         button_start.setOnClickListener(v ->{
+            if (editText.getText().toString().length() < 4){
+                return;
+            }
+            button_start.setEnabled(false);
             StorageControl control = new StorageControl(
                     FirebaseAuth.getInstance().getCurrentUser().getEmail(),
                     getIntent().getStringExtra("id_course"));
+
             control.addFile(chosenUri, editText.getText().toString(), flag -> {
                 Log.d(TAG, String.valueOf(flag));
                 EventBus.getDefault().post(editText.getText().toString());
-
                 finish();
             });
         });

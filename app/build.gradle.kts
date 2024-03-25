@@ -52,6 +52,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.android.gms:play-services-base:18.3.0")
     implementation("com.google.firebase:firebase-storage")
+    implementation("androidx.test.services:storage:1.4.2")
+    implementation ("org.apache.tika:tika-core:1.27")
     implementation("com.google.firebase:firebase-auth")
     implementation ("org.greenrobot:eventbus:3.2.0")
     implementation("com.google.firebase:firebase-database")
