@@ -3,6 +3,7 @@ package com.t.module_t.ui.cours;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import java.net.URLConnection;
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    private final String TAG = "CourseAdapter";
     private final LayoutInflater inflater;
     private final List<CourseElement> states;
     private final User user;
@@ -85,9 +86,7 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     inflater.getContext(),
                                     inflater.getContext().getApplicationContext().getPackageName() + ".provider",
                                     file.file);
-
-
-
+                            Log.d(TAG, file.type.toString());
                             Intent openFileIntent = new Intent(Intent.ACTION_VIEW);
                             openFileIntent.setDataAndType(fileUri, file.type); // здесь могут быть любые файлы
                             openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

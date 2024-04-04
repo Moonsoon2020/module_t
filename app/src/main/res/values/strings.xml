@@ -1,6 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">module_t</string>
-    <string name="title_home">Home</string>
-    <string name="title_course">Course</string>
-    <string name="title_notifications">Notifications</string>
+	<!-- frame_5 strings -->
+
+	<string name="app_name">Page 1</string>
+	<string name="ek_img_content">ExportKit Image</string>
+	<string name="quick_tutor_string">Quick Tutor</string>
+	<string name="______string"></string>
+	<string name="____________string"></string>
 </resources>
