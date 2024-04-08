@@ -78,6 +78,7 @@ public class CourseFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String string = snapshot.child("courseName").getValue().toString();
                         items.add(string);
+                        Log.d(TAG, "add element in spinner");
                         items_id_course.add(snapshot.child("id_course").getValue().toString());
                         if (string.equals(user.like_course)) {
                             spinner.setSelection(items.size() - 1);
@@ -125,7 +126,9 @@ public class CourseFragment extends Fragment {
                 courseAdapter = new CourseAdapter(requireActivity(), courses, user, items_id_course.get(position));
                 recyclerView.setAdapter(courseAdapter);
                 DataBaseControl control = new DataBaseControl();
+                Log.d(TAG, "add element in rec");
                 control.getCourse(items_id_course.get(position), course -> {
+                    courses.clear();
                     for (String item : course.items) {
                         courses.add(new CourseElement(item));
                     }

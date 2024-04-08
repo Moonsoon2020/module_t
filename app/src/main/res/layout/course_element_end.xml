@@ -9,6 +9,8 @@
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/quick_tutor_color"
+        android:gravity="center_horizontal|center_vertical"
         android:text="Добавить новый элемент"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

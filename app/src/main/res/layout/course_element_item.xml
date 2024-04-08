@@ -6,6 +6,9 @@
     android:layout_height="60dp">
 
     <TextView
+        style="@style/title_text"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
         android:id="@+id/textView_course"
         android:layout_width="300dp"
         android:layout_height="match_parent"
@@ -18,6 +21,7 @@
         android:id="@+id/imageButton2"
         android:layout_width="55dp"
         android:layout_height="match_parent"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.142"

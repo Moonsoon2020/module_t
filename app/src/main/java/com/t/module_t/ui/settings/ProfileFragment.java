@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.t.module_t.Authentication;
+import com.t.module_t.AutoriseActivity;
 import com.t.module_t.R;
 import com.t.module_t.database.DataBaseControl;
 import com.t.module_t.databinding.ProfAcBinding;
@@ -32,7 +32,7 @@ public class ProfileFragment extends Fragment {
         TextView textView = root.findViewById(R.id.textView);
         LinearLayout button_set = root.findViewById(R.id.linearLayout5);
         button_set.setOnClickListener(v -> {
-            getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new Fragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new SettingsFragment()).commit();
         });
         LinearLayout button_std = root.findViewById(R.id.linearLayout3);
         button_std.setOnClickListener(v -> {
@@ -40,11 +40,11 @@ public class ProfileFragment extends Fragment {
         });
         LinearLayout button_pop = root.findViewById(R.id.linearLayout4);
         button_pop.setOnClickListener(v -> {
-            getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new Fragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new POP_fragment()).commit();
         });
         LinearLayout button_help = root.findViewById(R.id.linearLayout6);
         button_help.setOnClickListener(v -> {
-            getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new Fragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new HelpFragment()).commit();
         });
         control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData -> {
             textView.setText(userData.username);
@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment {
         LinearLayout button_out = root.findViewById(R.id.linearLayout0);
         button_out.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            Intent mIntent = new Intent(root.getContext(), Authentication.class);
+            Intent mIntent = new Intent(root.getContext(), AutoriseActivity.class);
             mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mIntent);
             if (getActivity() != null) {

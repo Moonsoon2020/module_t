@@ -21,7 +21,9 @@
             app:srcCompat="@drawable/out" />
 
         <TextView
-            android:layout_width="349dp"
+            style="@style/title_text"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
             android:layout_height="match_parent"
             android:text="Выход" />
     </LinearLayout>
@@ -42,7 +44,9 @@
             app:srcCompat="@drawable/prof5" />
 
         <TextView
-            android:layout_width="349dp"
+            style="@style/title_text"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
             android:layout_height="match_parent"
             android:text="Помощь" />
     </LinearLayout>
@@ -63,7 +67,9 @@
             app:srcCompat="@drawable/prof3" />
 
         <TextView
-            android:layout_width="349dp"
+            style="@style/title_text"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
             android:layout_height="match_parent"
             android:text="Настройки" />
     </LinearLayout>
@@ -84,13 +90,16 @@
             app:srcCompat="@drawable/prof" />
 
         <TextView
-            android:layout_width="349dp"
+            style="@style/title_text"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
             android:layout_height="match_parent"
             android:text="Политика Приватности" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView"
+        style="@style/title_text"
         android:layout_width="138dp"
         android:layout_height="27dp"
         android:layout_marginTop="52dp"
@@ -116,7 +125,9 @@
             app:srcCompat="@drawable/prof2" />
 
         <TextView
-            android:layout_width="349dp"
+            style="@style/title_text"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
             android:layout_height="match_parent"
             android:text="Студенты" />
     </LinearLayout>

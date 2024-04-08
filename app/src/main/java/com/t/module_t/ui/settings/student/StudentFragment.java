@@ -19,7 +19,7 @@ import com.t.module_t.R;
 import com.t.module_t.database.BoolCallback;
 import com.t.module_t.database.DataBaseControl;
 import com.t.module_t.database.User;
-import com.t.module_t.databinding.FragmentSettingBinding;
+import com.t.module_t.databinding.FragmentAddStidentsBinding;
 import com.t.module_t.ui.settings.ProfileFragment;
 
 import java.util.ArrayList;
@@ -27,12 +27,12 @@ import java.util.ArrayList;
 public class StudentFragment extends Fragment {
 
     private String TAG = "Student_set_fragment";
-    FragmentSettingBinding binding;
+    FragmentAddStidentsBinding binding;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBaseControl control = new DataBaseControl();
-        binding = FragmentSettingBinding.inflate(inflater, container, false);
+        binding = FragmentAddStidentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         TextView back = root.findViewById(R.id.back1);
         back.setOnClickListener(v -> getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new ProfileFragment()).commit());

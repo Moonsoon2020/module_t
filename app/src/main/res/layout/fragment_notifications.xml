@@ -16,9 +16,27 @@
             android:id="@+id/image_button_app_bar_notify_delete_all"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@color/white"
             android:foreground="@drawable/baseline_delete_24"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.913"
+            app:layout_constraintStart_toEndOf="@+id/textView11"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView11"
+            style="@style/title_text"
+            android:layout_width="143dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="4dp"
+            android:text="Уведомления"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.102"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
