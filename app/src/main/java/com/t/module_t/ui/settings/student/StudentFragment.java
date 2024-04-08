@@ -1,6 +1,5 @@
-package com.t.module_t.ui.settings;
+package com.t.module_t.ui.settings.student;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,41 +7,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.t.module_t.Authentication;
 import com.t.module_t.R;
 import com.t.module_t.database.BoolCallback;
 import com.t.module_t.database.DataBaseControl;
 import com.t.module_t.database.User;
 import com.t.module_t.databinding.FragmentSettingBinding;
+import com.t.module_t.ui.settings.ProfileFragment;
 
 import java.util.ArrayList;
 
+public class StudentFragment extends Fragment {
 
-public class SettingsFragment extends Fragment {
-    private final String TAG = "SettingsFragment";
-
-    private FragmentSettingBinding binding;
-
+    private String TAG = "Student_set_fragment";
+    FragmentSettingBinding binding;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SettingsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(SettingsViewModel.class);
+        super.onCreate(savedInstanceState);
+        DataBaseControl control = new DataBaseControl();
         binding = FragmentSettingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        DataBaseControl control = new DataBaseControl();
-        ActionBar bar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        bar.setCustomView(R.layout.settings_toolbar);
-        bar.setDisplayShowCustomEnabled(true);
+        TextView back = root.findViewById(R.id.back1);
+        back.setOnClickListener(v -> getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new ProfileFragment()).commit());
         control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString(), v->{
             if (((User)v).status){
                 EditText email = root.findViewById(R.id.editTextTextEmailAddress);
@@ -59,7 +52,6 @@ public class SettingsFragment extends Fragment {
                     Log.i(TAG, users.toString());
                     courseAdapter.notifyItemInserted(courses.size() - 1);
                     courseAdapter.notifyDataSetChanged();
-
                 });
                 recyclerView.setAdapter(courseAdapter);
 
@@ -91,26 +83,6 @@ public class SettingsFragment extends Fragment {
 
             }
         });
-        Button button_out = bar.getCustomView().findViewById(R.id.button_settings_toolbar_out);
-        button_out.setOnClickListener(v ->{
-            FirebaseAuth.getInstance().signOut();
-            Intent mIntent = new Intent(root.getContext(), Authentication.class);
-            mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(mIntent);
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
-        });
-
-
-//        final TextView textView = binding.textNotifications;
-//        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

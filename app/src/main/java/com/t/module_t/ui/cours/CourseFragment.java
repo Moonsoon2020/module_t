@@ -13,8 +13,6 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,67 +58,64 @@ public class CourseFragment extends Fragment {
         binding = FragmentCourseBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Log.i(TAG, "create");
-        ActionBar bar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (bar != null) {
-            bar.setCustomView(R.layout.course_appbar);
-            bar.setDisplayShowCustomEnabled(true);
-            control = new DataBaseControl();
-            items_id_course = new ArrayList<>();
-            EventBus.getDefault().register(this);
 
-            items = new ArrayList<>();
-            spinner = bar.getCustomView().findViewById(R.id.spinner);
-            AdapterCourseBar adapter = new AdapterCourseBar(getContext(),
-                    android.R.layout.simple_spinner_item, items);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-            control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), user -> {
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                this.user = user;
-                for (String i : user.id_courses) {
-                    mDatabase.child("course").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String string = snapshot.child("courseName").getValue().toString();
-                            items.add(string);
-                            items_id_course.add(snapshot.child("id_course").getValue().toString());
-                            if (string.equals(user.like_course)) {
-                                spinner.setSelection(items.size() - 1);
-                            }
-                            adapter.notifyDataSetChanged();
+        control = new DataBaseControl();
+        items_id_course = new ArrayList<>();
+        EventBus.getDefault().register(this);
+        spinner = root.findViewById(R.id.spinner);
+        items = new ArrayList<>();
+        AdapterCourseBar adapter = new AdapterCourseBar(getContext(),
+                android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), user -> {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            this.user = user;
+            if (!user.id_courses.isEmpty()){
+            for (String i : user.id_courses) {
+                mDatabase.child("course").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String string = snapshot.child("courseName").getValue().toString();
+                        items.add(string);
+                        items_id_course.add(snapshot.child("id_course").getValue().toString());
+                        if (string.equals(user.like_course)) {
+                            spinner.setSelection(items.size() - 1);
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-            });
-
-            control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), user -> {
-                if (user.status) {
-                    ImageButton imageButton_add = bar.getCustomView().findViewById(R.id.image_button_course_add);
-                    ImageButton imageButton_set = bar.getCustomView().findViewById(R.id.imagebutton_course_settings);
-                    try {
-                        imageButton_set.setVisibility(View.VISIBLE);
-                        imageButton_add.setVisibility(View.VISIBLE);
-                        imageButton_set.setOnClickListener(v -> {
-                            Intent intent = new Intent(requireActivity(), SettingsCourse.class);
-                            intent.putExtra("id_course", items_id_course.get(spinner.getSelectedItemPosition()));
-                            startActivity(intent);
-                        });
-                        imageButton_add.setOnClickListener(v -> {
-                            Intent intent = new Intent(requireActivity(), NewCourse.class);
-                            startActivityForResult(intent, 101);
-                        });
-                    } catch (NullPointerException e) {
-                        Log.e(TAG, "Exception: " + e);
+                        adapter.notifyDataSetChanged();
                     }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }}
+        });
+
+        control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), user -> {
+            if (user.status) {
+                ImageButton imageButton_add = root.findViewById(R.id.image_button_course_add);
+                ImageButton imageButton_set = root.findViewById(R.id.imagebutton_course_settings);
+                try {
+                    imageButton_set.setVisibility(View.VISIBLE);
+                    imageButton_add.setVisibility(View.VISIBLE);
+                    imageButton_set.setOnClickListener(v -> {
+                        Intent intent = new Intent(requireActivity(), SettingsCourse.class);
+                        intent.putExtra("id_course", items_id_course.get(spinner.getSelectedItemPosition()));
+                        startActivity(intent);
+                    });
+                    imageButton_add.setOnClickListener(v -> {
+                        Intent intent = new Intent(requireActivity(), NewCourse.class);
+                        startActivityForResult(intent, 101);
+                    });
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "Exception: " + e);
                 }
-            });
-        }
+
+            }
+        });
+
         recyclerView = root.findViewById(R.id.recycler_course);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -143,7 +138,7 @@ public class CourseFragment extends Fragment {
                 Log.d(TAG, "ppp");
             }
 
-        });
+    });
 
         return root;
     }

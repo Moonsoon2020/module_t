@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- frame_5 strings -->
+	<!-- auntef_activity strings -->
 
-	<string name="app_name">Page 1</string>
+	<string name="app_name">Quick Tutor</string>
 	<string name="ek_img_content">ExportKit Image</string>
 	<string name="quick_tutor_string">Quick Tutor</string>
-	<string name="______string"></string>
-	<string name="____________string"></string>
+	<string name="____________string">Регистрация</string>
+	<string name="_____string">Вход</string>
 </resources>

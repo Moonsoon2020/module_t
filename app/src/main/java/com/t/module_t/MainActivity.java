@@ -1,45 +1,48 @@
 package com.t.module_t;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.ImageButton;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.databinding.ActivityMainBinding;
 import com.t.module_t.ui.cours.CourseFragment;
+import com.t.module_t.ui.notifications.NotificationsFragment;
+import com.t.module_t.ui.settings.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
+    ImageButton view0, view1, view2, view3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+//        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(R.layout.activity_main);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_settings)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        view0 = findViewById(R.id.view0);
+        view0.setOnClickListener(v -> set_fragment(new Fragment(), view0));
+        view1 = findViewById(R.id.view1);
+        view1.setOnClickListener(v -> set_fragment(new CourseFragment(), view1));
+        view2 = findViewById(R.id.view2);
+        view2.setOnClickListener(v -> set_fragment(new NotificationsFragment(), view2));
+        view3 = findViewById(R.id.view3);
+        view3.setOnClickListener(v -> set_fragment(new ProfileFragment(), view3));
+        set_fragment(fragment, view0);
+    }
 
+    void set_fragment(Fragment obj, ImageButton view) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, obj).commit();
+        view0.getBackground().setTint(getColor(R.color.black));
+        view1.getBackground().setTint(getColor(R.color.black));
+        view2.getBackground().setTint(getColor(R.color.black));
+        view3.getBackground().setTint(getColor(R.color.black));
+        view.getBackground().setTint(getColor(R.color.blue));
 
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- frame_5 colors -->
+	<!-- auntef_activity colors -->
 
 	<color name="colorPrimary">#008577</color>
 	<color name="colorPrimaryDark">#00574B</color>
@@ -13,7 +13,9 @@
 	<color name="black">#FF000000</color>
 	<color name="white">#FFFFFFFF</color>
 
-	<color name="_bg__frame_5_color">#FFFFFF</color>
-	<color name="quick_tutor_color">#000000</color>
-	<color name="rectangle_1_color">#ffffff</color>
+	<color name="_bg__auntef_activity_color">#FFFFFF</color>
+	<color name="quick_tutor_color">#57DEFF</color>
+	<color name="rectangle_4_color">#ffffff</color>
+    <color name="rou">#809CFF</color>
+    <color name="blue">#2260FF</color>
 </resources>

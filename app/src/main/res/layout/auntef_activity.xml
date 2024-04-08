@@ -1,0 +1,117 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:tooltipText="@string/_____string">
+
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/logo_fragment"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+	<View
+		android:id="@+id/buttonReg"
+		android:layout_width="300dp"
+		android:layout_height="68dp"
+		android:layout_marginTop="64dp"
+		android:background="@drawable/gradient_button_big"
+		android:clickable="true"
+		android:tooltipText="hhh"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/buttonAutgLogin" />
+
+	<View
+		android:id="@+id/buttonAutgLogin"
+		android:layout_width="301dp"
+		android:layout_height="64dp"
+		android:layout_gravity="center_horizontal|center"
+		android:layout_marginTop="56dp"
+		android:background="@drawable/gradient_button_big"
+		android:clickable="true"
+		android:gravity="center"
+		android:text="@string/_____string"
+		android:textColor="@color/black"
+		android:textSize="40sp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/_bg__logo_fragment_ek1">
+
+	</View>
+
+	<View
+		android:id="@+id/_bg__logo_fragment_ek1"
+		android:layout_width="234dp"
+		android:layout_height="398dp"
+		android:layout_alignParentStart="true"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<ImageView
+		android:id="@+id/logo_1"
+		android:layout_width="184dp"
+		android:layout_height="176dp"
+		android:layout_marginTop="56dp"
+		android:contentDescription="logo_1"
+		android:src="@drawable/logo"
+		app:layout_constraintEnd_toEndOf="@+id/_bg__logo_fragment_ek1"
+		app:layout_constraintHorizontal_bias="0.49"
+		app:layout_constraintStart_toStartOf="@+id/_bg__logo_fragment_ek1"
+		app:layout_constraintTop_toTopOf="@+id/_bg__logo_fragment_ek1" />
+
+	<TextView
+		android:id="@+id/quick_tutor"
+		android:layout_width="128dp"
+		android:layout_height="125dp"
+		android:layout_gravity="center_horizontal|center"
+		android:layout_marginStart="52dp"
+		android:layout_marginTop="32dp"
+		android:layout_marginEnd="55dp"
+		android:gravity="center"
+		android:text="@string/quick_tutor_string"
+		android:textColor="@color/quick_tutor_color"
+		android:textSize="40sp"
+		android:textStyle="bold"
+		app:layout_constraintEnd_toEndOf="@+id/_bg__logo_fragment_ek1"
+		app:layout_constraintStart_toStartOf="@+id/_bg__logo_fragment_ek1"
+		app:layout_constraintTop_toBottomOf="@+id/logo_1" />
+
+	<TextView
+		android:id="@+id/textView3"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Вход"
+		android:textColor="@color/white"
+		android:textSize="40sp"
+		app:layout_constraintBottom_toBottomOf="@+id/buttonAutgLogin"
+		app:layout_constraintEnd_toEndOf="@+id/buttonAutgLogin"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toStartOf="@+id/buttonAutgLogin"
+		app:layout_constraintTop_toTopOf="@+id/buttonAutgLogin"
+		app:layout_constraintVertical_bias="0.3" />
+
+	<TextView
+		android:id="@+id/textView4"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Регистрация"
+		android:textColor="@color/white"
+		android:textSize="40sp"
+		app:layout_constraintBottom_toBottomOf="@+id/buttonReg"
+		app:layout_constraintEnd_toEndOf="@+id/buttonReg"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toStartOf="@+id/buttonReg"
+		app:layout_constraintTop_toTopOf="@+id/buttonReg"
+		app:layout_constraintVertical_bias="0.3" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

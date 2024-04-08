@@ -1,4 +1,4 @@
-package com.t.module_t.ui.settings;
+package com.t.module_t.ui.settings.student;
 
 
 import android.content.Context;
@@ -29,14 +29,14 @@ public class StudentsAdapter  extends RecyclerView.Adapter<StudentsAdapter.ViewH
     }
     @NonNull
     @Override
-    public com.t.module_t.ui.settings.StudentsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StudentsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_student,parent, false);
-        return new com.t.module_t.ui.settings.StudentsAdapter.ViewHolder(view);
+        return new StudentsAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(com.t.module_t.ui.settings.StudentsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(StudentsAdapter.ViewHolder holder, int position) {
         User user = list.get(position);
         holder.nameView.setText(user.username + " " + user.email);
         holder.button.setOnClickListener(v ->{

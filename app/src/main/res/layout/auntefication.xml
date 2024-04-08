@@ -5,47 +5,94 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <TextView
+        android:id="@+id/textView8"
+        style="@style/title_text"
+        android:layout_width="189dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="16dp"
+        android:text="Войти в Аккаунт"
+        android:textColor="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.612"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView10"
+        style="@style/title_text"
+        android:layout_width="34dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:text="  &lt;"
+        app:layout_constraintEnd_toStartOf="@+id/textView8"
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
         android:id="@+id/buttonAutgLogin"
+        android:layout_width="301dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginBottom="132dp"
+        android:background="@drawable/gradient_button_big"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/_____string"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </View>
+
+    <TextView
+        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="88dp"
-        android:text="Войти"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAuthPassword" />
+        android:text="Вход"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonAutgLogin"
+        app:layout_constraintEnd_toEndOf="@+id/buttonAutgLogin"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/buttonAutgLogin"
+        app:layout_constraintTop_toTopOf="@+id/buttonAutgLogin"
+        app:layout_constraintVertical_bias="0.5" />
 
     <EditText
         android:id="@+id/editTextAuthPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="124dp"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_edit_text"
         android:ems="10"
+        android:gravity="center"
         android:hint="Пароль"
         android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAutgLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAuthEmail" />
-
-    <Button
-        android:id="@+id/buttonAuthReg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="52dp"
-        android:layout_marginBottom="60dp"
-        android:text="Регистрация"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAuthEmail"
+        app:layout_constraintVertical_bias="0.082" />
 
     <EditText
         android:id="@+id/editTextAuthEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="200dp"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/custom_edit_text"
         android:ems="10"
+        android:gravity="center"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

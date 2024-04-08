@@ -2,66 +2,114 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/back"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <View
         android:id="@+id/buttonReg"
+        android:layout_width="300dp"
+        android:layout_height="68dp"
+        android:background="@drawable/gradient_button_big"
+        android:clickable="true"
+        android:tooltipText="hhh"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchRegStatus"
+        app:layout_constraintVertical_bias="0.118" />
+
+    <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="268dp"
         android:text="Регистрация"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.532"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRegName" />
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonReg"
+        app:layout_constraintEnd_toEndOf="@+id/buttonReg"
+        app:layout_constraintStart_toStartOf="@+id/buttonReg"
+        app:layout_constraintTop_toTopOf="@+id/buttonReg"
+        app:layout_constraintVertical_bias="0.3" />
 
     <Switch
         android:id="@+id/switchRegStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
-        android:layout_marginEnd="36dp"
-        android:text="Я преподаватель"
+        android:layout_width="260dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="28dp"
+        android:text="   Я преподаватель"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRegName" />
 
     <EditText
         android:id="@+id/editTextRegName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/custom_edit_text"
         android:ems="10"
+        android:gravity="center"
         android:hint="Имя"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRegPassword" />
 
     <EditText
         android:id="@+id/editTextRegPassword"
-        android:layout_width="258dp"
+        android:layout_width="260dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:ems="10"
+        android:background="@drawable/custom_edit_text"
+        android:gravity="center"
         android:hint="Пароль больше 7 знаков"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRegEmail" />
 
     <EditText
         android:id="@+id/editTextRegEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_edit_text"
         android:ems="10"
+        android:gravity="center"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintVertical_bias="0.037" />
+
+    <TextView
+        android:id="@+id/textView8"
+        style="@style/title_text"
+        android:layout_width="189dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="16dp"
+        android:text="Новый Аккаунт"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.612"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView10"
+        style="@style/title_text"
+        android:layout_width="34dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:text="  &lt;"
+        app:layout_constraintEnd_toStartOf="@+id/textView8"
+        app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

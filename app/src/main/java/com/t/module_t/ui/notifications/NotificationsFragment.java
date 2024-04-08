@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -40,9 +38,7 @@ public class NotificationsFragment extends Fragment implements OnStartDragListen
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Log.d(TAG, "create");
-        ActionBar bar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        bar.setCustomView(R.layout.notification_toolbar);
-        bar.setDisplayShowCustomEnabled(true);
+
         DataBaseControl control = new DataBaseControl();
 
         RecyclerView recyclerView = root.findViewById(R.id.rec_notifications);
@@ -51,7 +47,7 @@ public class NotificationsFragment extends Fragment implements OnStartDragListen
 
         NotificationAdapter adapter = new NotificationAdapter(getContext(), this, array);
         recyclerView.setAdapter(adapter);
-        ImageButton all_delete_button = bar.getCustomView().findViewById(R.id.image_button_app_bar_notify_delete_all);
+        ImageButton all_delete_button = root.findViewById(R.id.image_button_app_bar_notify_delete_all);
         all_delete_button.setOnClickListener(v ->{
             control.deleteAllNotifyOfUser(FirebaseAuth.getInstance().getCurrentUser().getEmail());
             array.clear();

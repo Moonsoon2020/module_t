@@ -22,6 +22,9 @@ public class User {
     }
 
     public User(HashMap<String, Object> map) {
+        students = new ArrayList<>();
+        notifications = new ArrayList<>();
+        id_courses = new ArrayList<>();
         this.username = map.get("username").toString();
         this.email = map.get("email").toString();
         this.status = Boolean.parseBoolean(map.get("status").toString());
@@ -29,9 +32,7 @@ public class User {
             this.like_course = map.get("like_course").toString();
         HashMap<String, String> coursesMap = (HashMap<String, String>) map.get("courses");
         if (coursesMap != null) {
-            for (String courseId : coursesMap.values()) {
-                id_courses.add(courseId);
-            }
+            id_courses.addAll(coursesMap.values());
         }
         // Обработка списка студентов
         HashMap<String, String> studentsMap = (HashMap<String, String>) map.get("students");
