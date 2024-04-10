@@ -14,9 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
 import com.t.module_t.database.DataBaseControl;
 
 public class Registration extends AppCompatActivity {
@@ -27,12 +25,11 @@ public class Registration extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
         setContentView(R.layout.registration);
         View button = findViewById(R.id.buttonReg);
         Log.i(TAG, "Загрузка активити");
 
-        TextView textView = findViewById(R.id.textView8);
+        TextView textView = findViewById(R.id.textView10);
         textView.setOnClickListener(v -> finish());
         button.setOnClickListener(v -> {
             EditText editText = findViewById(R.id.editTextRegEmail);
@@ -52,7 +49,6 @@ public class Registration extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 return;
             }
-
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
@@ -60,7 +56,7 @@ public class Registration extends AppCompatActivity {
                             DataBaseControl control = new DataBaseControl();
                             String name = editTextName.getText().toString();
                             boolean status = aSwitch.isChecked();
-                            control.addUser(email, name, status, user.getUid().toString());
+                            control.addUser(email, name, status);
                             Intent intent = new Intent(Registration.this, MainActivity.class);
                             startActivity(intent);
                         } else {
@@ -70,9 +66,6 @@ public class Registration extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                             } else if (task.getException().getClass() == FirebaseAuthUserCollisionException.class) {
                                 Toast.makeText(Registration.this, "Проверьте правильность введённого email",
-                                        Toast.LENGTH_SHORT).show();
-                            } else if (FirebaseAuthInvalidCredentialsException.class == task.getException().getClass()) {
-                                Toast.makeText(Registration.this, "Логин или пароль не совпадают",
                                         Toast.LENGTH_SHORT).show();
                             }
                             Toast.makeText(Registration.this, "Что-то пошло не так, попробуйте, позже.",

@@ -13,9 +13,7 @@
 	<color name="black">#FF000000</color>
 	<color name="white">#FFFFFFFF</color>
 
-	<color name="_bg__auntef_activity_color">#FFFFFF</color>
 	<color name="quick_tutor_color">#57DEFF</color>
-	<color name="rectangle_4_color">#ffffff</color>
     <color name="rou">#809CFF</color>
     <color name="blue">#2260FF</color>
 </resources>

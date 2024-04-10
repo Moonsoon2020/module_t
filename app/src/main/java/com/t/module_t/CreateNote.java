@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.database.StorageControl;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,9 +36,7 @@ public class CreateNote extends AppCompatActivity {
                 return;
             }
             button_start.setEnabled(false);
-            StorageControl control = new StorageControl(
-                    FirebaseAuth.getInstance().getCurrentUser().getEmail(),
-                    getIntent().getStringExtra("id_course"));
+            StorageControl control = new StorageControl(getIntent().getStringExtra("id_course"));
 
             control.addFile(chosenUri, editText.getText().toString(), flag -> {
                 Log.d(TAG, String.valueOf(flag));

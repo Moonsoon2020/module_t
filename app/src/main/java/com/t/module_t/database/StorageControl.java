@@ -13,13 +13,11 @@ import java.io.IOException;
 public class StorageControl {
     private StorageReference storage;
     private final String TAG = "StorageControl";
-    private String email;
     private String id_course;
     private DataBaseControl control;
 
-    public StorageControl(String email, String id_course) {
-        this.email = translate(email);
-        storage = FirebaseStorage.getInstance().getReference().child(this.email);
+    public StorageControl(String id_course) {
+        storage = FirebaseStorage.getInstance().getReference().child(id_course);
         control = new DataBaseControl();
         this.id_course = id_course;
     }
@@ -29,7 +27,7 @@ public class StorageControl {
     }
 
     public void getFile(String name, FileCallback callback) throws IOException {
-        storage.child(id_course).child(name).getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+        storage.child(name).getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
             @Override
             public void onSuccess(StorageMetadata metadata) {
                 File file = null;
@@ -40,18 +38,19 @@ public class StorageControl {
                     throw new RuntimeException(e);
                 }
                 File finalFile = file;
-                storage.child(id_course).child(name).getFile(file).addOnCompleteListener(v -> {
+                storage.child(name).getFile(file).addOnCompleteListener(v -> {
                     callback.onFileFetch(new FileT(finalFile, metadata.getContentType()));
                 });
             }
+
         });
 
     }
 
     public void addFile(Uri fileUri, String string, BoolCallback callback) {
-        storage.child(id_course).child(string).putFile(fileUri)
+        storage.child(string).putFile(fileUri)
                 .addOnSuccessListener(taskSnapshot -> {
-                    control.updateCourseOnNewNote(string, email, id_course);
+                    control.updateCourseOnNewNote(string, id_course);
                     callback.onBoolFetch(true);
                 })
                 .addOnFailureListener(exception -> {

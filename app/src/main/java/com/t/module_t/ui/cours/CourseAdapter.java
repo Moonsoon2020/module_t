@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import android.content.ActivityNotFoundException;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,7 +80,7 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 CourseElement state = states.get(position);
                 hold.nameView.setText(state.getName());
                 hold.button.setOnClickListener(v -> {
-                    StorageControl control = new StorageControl(user.email, id_course);
+                    StorageControl control = new StorageControl(id_course);
                     try {
                         control.getFile(hold.nameView.getText().toString(), file -> {
                             Uri fileUri = FileProvider.getUriForFile(
@@ -90,7 +91,12 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             Intent openFileIntent = new Intent(Intent.ACTION_VIEW);
                             openFileIntent.setDataAndType(fileUri, file.type); // здесь могут быть любые файлы
                             openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            inflater.getContext().startActivity(openFileIntent);
+                            try {
+                                inflater.getContext().startActivity(openFileIntent);
+                            } catch (ActivityNotFoundException ignored){
+                                Toast.makeText(inflater.getContext(), "Стандартное средство открытия файла этого типа не найдено", Toast.LENGTH_SHORT).show();
+                            }
+
                         });
                     } catch (IOException e) {
                         throw new RuntimeException(e);

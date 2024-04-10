@@ -30,7 +30,7 @@ public class DataBaseControl {
         return email.replace(".", "~");
     }
 
-    public void addUser(String email, String name, Boolean status, String id) {
+    public void addUser(String email, String name, Boolean status) {
         email = translate(email);
         User user = new User(name, email, status);
         mDatabase.child("users").child(email).setValue(user);
@@ -220,7 +220,7 @@ public class DataBaseControl {
                 child("notifications").removeValue();
     }
 
-    public void updateCourseOnNewNote(String title, String email, String id_course) {
+    public void updateCourseOnNewNote(String title, String id_course) {
         mDatabase.child("course").child(id_course).child("items").push().setValue(title);
     }
 }
