@@ -8,7 +8,6 @@
     <TextView
         style="@style/title_text"
         android:gravity="center_vertical"
-        android:textColor="@color/black"
         android:id="@+id/textView_course"
         android:layout_width="300dp"
         android:layout_height="match_parent"
