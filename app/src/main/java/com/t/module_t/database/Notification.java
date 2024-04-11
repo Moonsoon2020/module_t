@@ -1,18 +1,16 @@
 package com.t.module_t.database;
 
-import android.health.connect.datatypes.units.Length;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
 
 public class Notification{
     public String text;
     public String id_notifications;
     public Date date;
+
     public static String splitString(String inputString, int maxCharactersPerLine) {
         String[] words = inputString.split("\\s+"); // Разбиваем строку на слова
 

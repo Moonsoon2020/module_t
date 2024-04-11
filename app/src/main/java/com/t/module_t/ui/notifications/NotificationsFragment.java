@@ -60,6 +60,11 @@ public class NotificationsFragment extends Fragment implements OnStartDragListen
                 adapter.notifyDataSetChanged();
             }
         });
+        control.addNotificationOnProcess(FirebaseAuth.getInstance().getCurrentUser().getEmail(), v ->{
+            array.clear();
+            array.addAll(v);
+            adapter.notifyDataSetChanged();
+        });
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);

@@ -4,9 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class DataBaseControl {
@@ -27,6 +30,7 @@ public class DataBaseControl {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         context = null;
     }
+
     public DataBaseControl(Context context) {
         Log.i(TAG, "constructor");
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -42,7 +46,7 @@ public class DataBaseControl {
         email = translate(email);
         User user = new User(name, email, status, token);
         mDatabase.child("users").child(email).setValue(user);
-        addNotificationForUser("Привет, поздравляю с регистрацией", email , "Уведомления");
+        addNotificationForUser("Привет, поздравляю с регистрацией", email, "Уведомления");
     }
 
     public void getUser(String email, final UserCallback callback) {
@@ -133,7 +137,7 @@ public class DataBaseControl {
     public void addNotificationForUser(String text, String email, String title) {
         Notification notification = new Notification(text, mDatabase.child("users").child(translate(email)).child("notifications")
                 .push().getKey());
-        getUser(email, v->MessageControl.sendMessage(title, text, v.token, context));
+        getUser(email, v -> MessageControl.sendMessage(title, text, v.token, context));
         mDatabase.child("users").child(translate(email)).child("notifications")
                 .child(notification.id_notifications).setValue(notification);
     }
@@ -206,6 +210,62 @@ public class DataBaseControl {
                     Course course = new Course((HashMap<String, Object>) userData);
                     callback.onCourseFetch(course); // Уведомляем обратный вызов о получении данных пользователя
                 }
+            }
+        });
+    }
+
+    public void addNotificationOnProcess(String email, NotificationArrayCallback callback) {
+        email = translate(email);
+        mDatabase.child("users").child(email).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
+                Log.i(TAG, snapshot.toString() + "\n" + previousChildName);
+//                callback.onNotificationFetch(new Notification((HashMap<String, Object>)snapshot.getValue()));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.i(TAG, snapshot.toString());
+                ArrayList<Notification> list = new ArrayList<>();
+
+                // Преобразуем DataSnapshot в HashMap
+                HashMap<String, Object> notificationsMap = (HashMap<String, Object>) snapshot.getValue();
+                if (notificationsMap != null) {
+                    // Перебираем каждую запись в узле "notifications" и создаем объекты Notification
+                    for (Map.Entry<String, Object> entry : notificationsMap.entrySet()) {
+                        HashMap<String, Object> notificationData = (HashMap<String, Object>) entry.getValue();
+
+                        // Извлекаем данные уведомления из HashMap
+                        String id = (String) notificationData.get("id_notifications");
+                        String text = (String) notificationData.get("text");
+                        HashMap<String, Object> dateData = (HashMap<String, Object>) notificationData.get("date");
+
+                        // Создаем объект Notification и добавляем его в список
+                        Notification notification = new Notification(text, id, dateData);
+                        list.add(notification);
+                    }
+                }
+                // Передаем список уведомлений через колбэк
+                callback.onNotificationArrayFetch(list);
+            }
+
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Log.i(TAG, "adddddddddddddddddddddddddddddddd");
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.i(TAG, "adddddddddddddddddddddddddddddddd");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "adddddddddddddddddddddddddddddddd");
+
             }
         });
     }
