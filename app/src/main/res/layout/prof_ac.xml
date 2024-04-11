@@ -9,6 +9,7 @@
         android:id="@+id/linearLayout0"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,8 +24,8 @@
         <TextView
             style="@style/title_text"
             android:layout_width="0dp"
-            android:layout_weight="0.9"
             android:layout_height="match_parent"
+            android:layout_weight="0.9"
             android:text="Выход" />
     </LinearLayout>
 
@@ -32,6 +33,7 @@
         android:id="@+id/linearLayout6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,8 +48,8 @@
         <TextView
             style="@style/title_text"
             android:layout_width="0dp"
-            android:layout_weight="0.9"
             android:layout_height="match_parent"
+            android:layout_weight="0.9"
             android:text="Помощь" />
     </LinearLayout>
 
@@ -55,6 +57,7 @@
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,8 +72,8 @@
         <TextView
             style="@style/title_text"
             android:layout_width="0dp"
-            android:layout_weight="0.9"
             android:layout_height="match_parent"
+            android:layout_weight="0.9"
             android:text="Настройки" />
     </LinearLayout>
 
@@ -78,6 +81,7 @@
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,8 +96,9 @@
         <TextView
             style="@style/title_text"
             android:layout_width="0dp"
-            android:layout_weight="0.9"
             android:layout_height="match_parent"
+            android:layout_weight="0.9"
+            android:gravity="center_horizontal|center_vertical"
             android:text="Политика Приватности" />
     </LinearLayout>
 
@@ -112,6 +117,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:visibility="invisible"
@@ -127,8 +133,8 @@
         <TextView
             style="@style/title_text"
             android:layout_width="0dp"
-            android:layout_weight="0.9"
             android:layout_height="match_parent"
+            android:layout_weight="0.9"
             android:text="Студенты" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

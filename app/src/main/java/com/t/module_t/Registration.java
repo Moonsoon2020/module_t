@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.t.module_t.database.DataBaseControl;
 
 public class Registration extends AppCompatActivity {
@@ -53,12 +54,23 @@ public class Registration extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "createUserWithEmail:success");
-                            DataBaseControl control = new DataBaseControl();
+                            DataBaseControl control = new DataBaseControl(this);
                             String name = editTextName.getText().toString();
                             boolean status = aSwitch.isChecked();
-                            control.addUser(email, name, status);
-                            Intent intent = new Intent(Registration.this, MainActivity.class);
-                            startActivity(intent);
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(task1 -> {
+                                        if (!task1.isSuccessful()) {
+                                            Log.w(TAG, "Fetching FCM registration token failed", task1.getException());
+                                            return;
+                                        }
+
+                                        String token = task1.getResult();
+                                        control.addUser(email, name, status, token);
+                                        Log.d(TAG, token);
+                                        Intent intent = new Intent(Registration.this, MainActivity.class);
+
+                                        startActivity(intent);
+                                    });
                         } else {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             if (task.getException().getClass() == FirebaseNetworkException.class) {
@@ -67,7 +79,7 @@ public class Registration extends AppCompatActivity {
                             } else if (task.getException().getClass() == FirebaseAuthUserCollisionException.class) {
                                 Toast.makeText(Registration.this, "Проверьте правильность введённого email",
                                         Toast.LENGTH_SHORT).show();
-                            }
+                            } else
                             Toast.makeText(Registration.this, "Что-то пошло не так, попробуйте, позже.",
                                     Toast.LENGTH_SHORT).show();
                         }

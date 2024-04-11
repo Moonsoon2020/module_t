@@ -40,7 +40,7 @@ public class StudentsAdapter  extends RecyclerView.Adapter<StudentsAdapter.ViewH
         User user = list.get(position);
         holder.nameView.setText(user.username + " " + user.email);
         holder.button.setOnClickListener(v ->{
-            DataBaseControl control = new DataBaseControl();
+            DataBaseControl control = new DataBaseControl(inflater.getContext());
             list.remove(position);
             control.deleteUserOfStudents(teacher, user.getEmail());
             notifyItemRemoved(list.size() - 1);

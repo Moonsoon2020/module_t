@@ -21,7 +21,7 @@ public class NewCourse extends AppCompatActivity {
         EditText editText = findViewById(R.id.editTextText);
         button.setOnClickListener(v -> {
             String name = editText.getText().toString();
-            DataBaseControl control = new DataBaseControl();
+            DataBaseControl control = new DataBaseControl(this);
             String id = control.addCourse(name, FirebaseAuth.getInstance().getCurrentUser().getEmail());
             Intent resultIntent = new Intent();
             resultIntent.putExtra("item", name);

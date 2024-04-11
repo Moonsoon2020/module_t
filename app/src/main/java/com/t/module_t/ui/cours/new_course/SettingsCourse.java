@@ -2,8 +2,6 @@ package com.t.module_t.ui.cours.new_course;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.R;
 import com.t.module_t.database.DataBaseControl;
-import com.t.module_t.database.Notification;
 import com.t.module_t.database.User;
-import com.t.module_t.ui.notifications.NotificationAdapter;
 
 import java.util.ArrayList;
 
@@ -30,7 +26,7 @@ public class SettingsCourse extends AppCompatActivity {
         Intent intent = getIntent();
         StudentsAdapter adapter = new StudentsAdapter(this, array, intent.getStringExtra("id_course"));
         recyclerView.setAdapter(adapter);
-        DataBaseControl control = new DataBaseControl();
+        DataBaseControl control = new DataBaseControl(this);
         control.getStudentsByEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData -> {
             array.addAll(userData);
             adapter.notifyDataSetChanged();

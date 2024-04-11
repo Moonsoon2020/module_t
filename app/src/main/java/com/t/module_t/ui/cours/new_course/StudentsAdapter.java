@@ -30,7 +30,7 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.ViewHo
         this.list = list;
         this.id_course = id_course;
         this.inflater = LayoutInflater.from(context);
-        this.control = new DataBaseControl();
+        this.control = new DataBaseControl(context);
     }
     @NonNull
     @Override

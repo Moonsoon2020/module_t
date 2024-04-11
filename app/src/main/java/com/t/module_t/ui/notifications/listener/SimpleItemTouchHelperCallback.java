@@ -113,7 +113,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             // Tell the view holder it's time to restore the idle state
             ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
             itemViewHolder.onItemClear();
-            DataBaseControl control = new DataBaseControl();
+            DataBaseControl control = new DataBaseControl(mAdapter.getContext());
             control.deleteNotifyOfUser(( (NotificationAdapter.ItemViewHolder)viewHolder).data, FirebaseAuth.getInstance().getCurrentUser().getEmail());
         }
 

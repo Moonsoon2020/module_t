@@ -39,7 +39,7 @@ public class NotificationsFragment extends Fragment implements OnStartDragListen
         View root = binding.getRoot();
         Log.d(TAG, "create");
 
-        DataBaseControl control = new DataBaseControl();
+        DataBaseControl control = new DataBaseControl(root.getContext());
 
         RecyclerView recyclerView = root.findViewById(R.id.rec_notifications);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));

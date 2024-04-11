@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class User {
     public String username;
@@ -11,19 +12,25 @@ public class User {
     public String email;
     public boolean status;
     public String like_course;
+    public String token;
     public ArrayList<String> students = new ArrayList<>();
     public ArrayList<Notification> notifications = new ArrayList<>();
     public ArrayList<String> id_courses = new ArrayList<>();
 
-    public User(String username, String email, boolean status) {
+    public User(String username, String email, boolean status, String token) {
         this.username = username;
         this.email = email;
         this.status = status;
+        this.token = token;
     }
 
     public User(HashMap<String, Object> map) {
         students = new ArrayList<>();
         notifications = new ArrayList<>();
+        if (map.containsKey("token"))
+            token = Objects.requireNonNull(map.get("token")).toString();
+        else
+            token = null;
         id_courses = new ArrayList<>();
         this.username = map.get("username").toString();
         this.email = map.get("email").toString();

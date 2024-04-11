@@ -31,7 +31,7 @@ public class StudentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DataBaseControl control = new DataBaseControl();
+        DataBaseControl control = new DataBaseControl(getContext());
         binding = FragmentAddStidentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         TextView back = root.findViewById(R.id.back1);

@@ -2,6 +2,7 @@ package com.t.module_t.ui.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ public class ProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = ProfAcBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        DataBaseControl control = new DataBaseControl();
+        DataBaseControl control = new DataBaseControl(root.getContext());
         TextView textView = root.findViewById(R.id.textView);
         LinearLayout button_set = root.findViewById(R.id.linearLayout5);
         button_set.setOnClickListener(v -> {
@@ -46,15 +47,22 @@ public class ProfileFragment extends Fragment {
         button_help.setOnClickListener(v -> {
             getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new HelpFragment()).commit();
         });
-        control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData -> {
-            textView.setText(userData.username);
-            if (userData.status){
-                button_std.setVisibility(View.VISIBLE);
-            }
-        });
+        try {
+            control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData -> {
+                textView.setText(userData.username);
+                if (userData.status){
+                    button_std.setVisibility(View.VISIBLE);
+                }
+            });
+        } catch (Exception e){
+            textView.setText("error");
+            Log.d(TAG, e.toString());
+        }
 
         LinearLayout button_out = root.findViewById(R.id.linearLayout0);
         button_out.setOnClickListener(v -> {
+            DataBaseControl dataBaseControl = new DataBaseControl(root.getContext());
+            dataBaseControl.removeToken(FirebaseAuth.getInstance().getCurrentUser().getEmail());
             FirebaseAuth.getInstance().signOut();
             Intent mIntent = new Intent(root.getContext(), AutoriseActivity.class);
             mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

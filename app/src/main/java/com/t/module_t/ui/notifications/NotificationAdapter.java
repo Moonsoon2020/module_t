@@ -25,10 +25,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private List<Notification> mItems = new ArrayList<>();
     private final OnStartDragListener mDragStartListener;
-
+    private Context context;
+    public Context getContext(){
+        return context;
+    }
     public NotificationAdapter(Context context, OnStartDragListener dragStartListener, List<Notification> mItems) {
         mDragStartListener = dragStartListener;
         this.mItems = mItems;
+        this.context = context;
     }
 
     @Override
