@@ -233,15 +233,7 @@ public class DataBaseControl {
                 if (notificationsMap != null) {
                     // Перебираем каждую запись в узле "notifications" и создаем объекты Notification
                     for (Map.Entry<String, Object> entry : notificationsMap.entrySet()) {
-                        HashMap<String, Object> notificationData = (HashMap<String, Object>) entry.getValue();
-
-                        // Извлекаем данные уведомления из HashMap
-                        String id = (String) notificationData.get("id_notifications");
-                        String text = (String) notificationData.get("text");
-                        HashMap<String, Object> dateData = (HashMap<String, Object>) notificationData.get("date");
-
-                        // Создаем объект Notification и добавляем его в список
-                        Notification notification = new Notification(text, id, dateData);
+                        Notification notification = getNotification(entry);
                         list.add(notification);
                     }
                 }
@@ -268,6 +260,20 @@ public class DataBaseControl {
 
             }
         });
+    }
+
+    @NonNull
+    private static Notification getNotification(Map.Entry<String, Object> entry) {
+        HashMap<String, Object> notificationData = (HashMap<String, Object>) entry.getValue();
+
+        // Извлекаем данные уведомления из HashMap
+        String id = (String) notificationData.get("id_notifications");
+        String text = (String) notificationData.get("text");
+        HashMap<String, Object> dateData = (HashMap<String, Object>) notificationData.get("date");
+
+        // Создаем объект Notification и добавляем его в список
+        Notification notification = new Notification(text, id, dateData);
+        return notification;
     }
 
     public void set_like_item_course(String email, String string) {
