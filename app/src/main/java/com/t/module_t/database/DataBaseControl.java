@@ -310,4 +310,8 @@ public class DataBaseControl {
         mDatabase.child("users").child(translate(email)).
                 child("token").removeValue();
     }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 }

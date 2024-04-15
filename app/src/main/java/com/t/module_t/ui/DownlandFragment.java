@@ -1,5 +1,6 @@
 package com.t.module_t.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +28,20 @@ public class DownlandFragment extends Fragment {
         View root = binding.getRoot();
         Animation rotate = AnimationUtils.loadAnimation(this.getContext(), R.anim.dowland);
         root.findViewById(R.id.imageView_dow).startAnimation(rotate);
-        rotate.reset();
-        rotate.start();
         return root;
+    }
+
+    public interface FragmentCreationListener {
+        void onFragmentCreated(Fragment fragment);
+    }
+
+    public void getNewFragment(Context context, String name, FragmentCreationListener listener) {
+        long startTime = System.currentTimeMillis();
+        Fragment fragment = Fragment.instantiate(context, name);
+        if (System.currentTimeMillis() - startTime < 5000) {
+            listener.onFragmentCreated(fragment);
+        } else {
+            listener.onFragmentCreated(Fragment.instantiate(context, NoInternetFragment.class.getName()));
+        }
     }
 }

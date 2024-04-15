@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,6 +29,7 @@ public class StudentFragment extends Fragment {
 
     private String TAG = "Student_set_fragment";
     FragmentAddStidentsBinding binding;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +38,11 @@ public class StudentFragment extends Fragment {
         View root = binding.getRoot();
         TextView back = root.findViewById(R.id.back1);
         back.setOnClickListener(v -> getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new ProfileFragment()).commit());
-        control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString(), v->{
-            if (((User)v).status){
+        control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString(), v -> {
+            if (v.status) {
                 EditText email = root.findViewById(R.id.editTextTextEmailAddress);
                 Button button = root.findViewById(R.id.button);
-                RecyclerView recyclerView = root.findViewById(R.id.rec_student);email.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                button.setVisibility(View.VISIBLE);
+                RecyclerView recyclerView = root.findViewById(R.id.rec_student);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
                 ArrayList<User> courses = new ArrayList<>();
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -61,10 +61,10 @@ public class StudentFragment extends Fragment {
                         control.getUser(email_, userData -> {
                             // Обрабатываем данные пользователя здесь
                             if (userData != null) {
-                                control.checkUserInStudentsByEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData, new BoolCallback(){
+                                control.checkUserInStudentsByEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData, new BoolCallback() {
                                     @Override
                                     public void onBoolFetch(boolean flag) {
-                                        if (flag){
+                                        if (flag) {
                                             control.updateTeacherByNewStudent(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData);
                                             courses.add(userData);
                                             Log.d(TAG, userData.toString());
@@ -74,12 +74,11 @@ public class StudentFragment extends Fragment {
                                     }
                                 });
                             } else {
-                                //Toast.makeText(root.getContext(), "Внутренняя ошибка", Toast.LENGTH_SHORT);
-                                // Обрабатываем ошибку или отсутствие данных
+                                Toast.makeText(root.getContext(), "Студент не найден", Toast.LENGTH_SHORT).show();
                             }
                         });
                 });
-            } else{
+            } else {
 
             }
         });

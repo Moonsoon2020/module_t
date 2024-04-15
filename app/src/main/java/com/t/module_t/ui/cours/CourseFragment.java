@@ -50,7 +50,7 @@ public class CourseFragment extends Fragment {
     private RecyclerView.Adapter courseAdapter;
     private ArrayList<CourseElement> courses = new ArrayList<>();
     private User user;
-    private boolean flag = false;
+    public boolean flag = false;
     ArrayList<String> items;
 
     private class LoadCoursesTask extends AsyncTask<Void, Void, Void> {
@@ -81,12 +81,13 @@ public class CourseFragment extends Fragment {
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
                                 numberOfCourses--; // Decrement if a call is canceled
+
                             }
                         });
                     }
                 } else numberOfCourses = 0;
             });
-            while (coursesLoaded != numberOfCourses){
+            while (coursesLoaded != numberOfCourses) {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
@@ -101,17 +102,17 @@ public class CourseFragment extends Fragment {
             super.onPostExecute(aVoid);
             // Выполняется после завершения загрузки данных
             Log.i(TAG, "constructor");
-            if (flag)
-                updateUI();
             flag = true;
             // После выполнения загрузки данных обновите интерфейс, если это необходимо
         }
     }
-    public CourseFragment(){
+
+    public CourseFragment() {
         EventBus.getDefault().register(this);
+        long startTime = System.currentTimeMillis();
         LoadCoursesTask loadCoursesTask = new LoadCoursesTask();
         loadCoursesTask.execute();
-        while (loadCoursesTask.isCancelled()){
+        while (!flag && System.currentTimeMillis() - startTime < 5000) {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
@@ -119,9 +120,11 @@ public class CourseFragment extends Fragment {
             }
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "resume");
 
         // Запускаем загрузку данных при возобновлении фрагмента
 //        new LoadCoursesTask().execute();
@@ -193,9 +196,7 @@ public class CourseFragment extends Fragment {
         binding = FragmentCourseBinding.inflate(inflater, container, false);
         this.root = binding.getRoot();
         Log.i(TAG, "create");
-        if (flag)
-            updateUI();
-        flag = true;
+        updateUI();
         return root;
     }
 

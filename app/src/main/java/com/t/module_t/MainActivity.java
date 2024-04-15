@@ -1,7 +1,5 @@
 package com.t.module_t;
 
-import static java.lang.Thread.sleep;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -52,32 +50,30 @@ public class MainActivity extends AppCompatActivity {
     void set_fragment(Class<? extends Fragment> obj, @NonNull ImageButton view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        // Отображаем DownlandFragment
-        DownlandFragment downlandFragment = new DownlandFragment();
-        fragmentTransaction.replace(R.id.fragmentContainerView, downlandFragment);
-        fragmentTransaction.commit();
-
-        // Устанавливаем цвет фона кнопок
         view0.getBackground().setTint(getColor(R.color.black));
         view1.getBackground().setTint(getColor(R.color.black));
         view2.getBackground().setTint(getColor(R.color.black));
         view3.getBackground().setTint(getColor(R.color.black));
         view.getBackground().setTint(getColor(R.color.blue));
 
+        // Отображаем DownlandFragment
+        DownlandFragment downlandFragment = new DownlandFragment();
+        fragmentTransaction.replace(R.id.fragmentContainerView, downlandFragment);
+        fragmentTransaction.commit();
+        // Устанавливаем цвет фона кнопок
+
+
         // Запускаем загрузку данных асинхронно
         Thread thread = new Thread(() -> {
             // Делаем паузу для имитации загрузки данных
             // Заменяем DownlandFragment на целевой фрагмент
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            Fragment fragment = Fragment.instantiate(this, obj.getName());
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            transaction.replace(R.id.fragmentContainerView, fragment);
-            transaction.commit();
+            downlandFragment.getNewFragment(this, obj.getName(), fragment->{
+                if (fragment == null)
+                    return;
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragmentContainerView, fragment);
+                transaction.commit();
+            });
         });
         thread.start();
     }
