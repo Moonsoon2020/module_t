@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.R;
-import com.t.module_t.database.BoolCallback;
 import com.t.module_t.database.DataBaseControl;
 import com.t.module_t.database.User;
 import com.t.module_t.databinding.FragmentAddStidentsBinding;
@@ -61,16 +60,13 @@ public class StudentFragment extends Fragment {
                         control.getUser(email_, userData -> {
                             // Обрабатываем данные пользователя здесь
                             if (userData != null) {
-                                control.checkUserInStudentsByEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData, new BoolCallback() {
-                                    @Override
-                                    public void onBoolFetch(boolean flag) {
-                                        if (flag) {
-                                            control.updateTeacherByNewStudent(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData);
-                                            courses.add(userData);
-                                            Log.d(TAG, userData.toString());
-                                            courseAdapter.notifyItemInserted(courses.size() - 1);
-                                            courseAdapter.notifyDataSetChanged();
-                                        }
+                                control.checkUserInStudentsByEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData, flag -> {
+                                    if (flag) {
+                                        control.updateByNewStudent(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData);
+                                        courses.add(userData);
+                                        Log.d(TAG, userData.toString());
+                                        courseAdapter.notifyItemInserted(courses.size() - 1);
+                                        courseAdapter.notifyDataSetChanged();
                                     }
                                 });
                             } else {

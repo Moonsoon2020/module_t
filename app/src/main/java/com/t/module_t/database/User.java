@@ -13,7 +13,7 @@ public class User {
     public boolean status;
     public String like_course;
     public String token;
-    public ArrayList<String> students = new ArrayList<>();
+    public ArrayList<String> piple = new ArrayList<>();
     public ArrayList<Notification> notifications = new ArrayList<>();
     public ArrayList<String> id_courses = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class User {
     }
 
     public User(HashMap<String, Object> map) {
-        students = new ArrayList<>();
+        piple = new ArrayList<>();
         notifications = new ArrayList<>();
         if (map.containsKey("token"))
             token = Objects.requireNonNull(map.get("token")).toString();
@@ -44,7 +44,11 @@ public class User {
         // Обработка списка студентов
         HashMap<String, String> studentsMap = (HashMap<String, String>) map.get("students");
         if (studentsMap != null) {
-            for (String student_email : studentsMap.values()) students.add(student_email);
+            piple.addAll(studentsMap.values());
+        }
+        studentsMap = (HashMap<String, String>) map.get("teachers");
+        if (studentsMap != null) {
+            piple.addAll(studentsMap.values());
         }
         if (map.containsKey("notifications")) {
             HashMap<String, Object> data = (HashMap<String, Object>) map.get("notifications");
@@ -59,8 +63,8 @@ public class User {
         }
     }
 
-    public ArrayList<String> getStudents() {
-        return students;
+    public ArrayList<String> getPeople() {
+        return piple;
     }
 
     public String getEmail() {
@@ -70,6 +74,6 @@ public class User {
     @NonNull
     @Override
     public String toString() {
-        return "Username: " + username + "Email: " + getEmail() + "Students: " + students + "Notifications: " + notifications;
+        return "Username: " + username + "Email: " + getEmail() + "Students: " + piple + "Notifications: " + notifications;
     }
 }

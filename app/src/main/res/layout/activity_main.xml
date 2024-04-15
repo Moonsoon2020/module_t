@@ -9,7 +9,6 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.t.module_t.ui.mess.MessFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.9"

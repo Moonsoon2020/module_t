@@ -68,7 +68,7 @@
                 android:resource="@xml/file_path"/>
         </provider>
         <service
-            android:name=".TestFirebaseMessagingService"
+            android:name=".FirebaseMessagingService"
             android:exported="false"
             android:directBootAware="true">
             <intent-filter>

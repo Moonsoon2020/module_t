@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -36,7 +35,8 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.ViewHo
     @Override
     public StudentsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.settings_course_item,parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.settings_course_item,parent, false);
         return new StudentsAdapter.ViewHolder(view);
     }
 

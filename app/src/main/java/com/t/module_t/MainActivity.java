@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.databinding.ActivityMainBinding;
 import com.t.module_t.ui.DownlandFragment;
 import com.t.module_t.ui.cours.CourseFragment;
+import com.t.module_t.ui.mess.MessFragment;
 import com.t.module_t.ui.notifications.NotificationsFragment;
 import com.t.module_t.ui.settings.ProfileFragment;
 
@@ -34,17 +35,17 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(new NotificationChannel("1011",
                 "notify", NotificationManager.IMPORTANCE_LOW));
 //        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
-        Intent intent = new Intent(this, TestFirebaseMessagingService.class);
+        Intent intent = new Intent(this, FirebaseMessagingService.class);
         startService(intent);
         view0 = findViewById(R.id.view0);
-        view0.setOnClickListener(v -> set_fragment(Fragment.class, view0));
+        view0.setOnClickListener(v -> set_fragment(MessFragment.class, view0));
         view1 = findViewById(R.id.view1);
         view1.setOnClickListener(v -> set_fragment(CourseFragment.class, view1));
         view2 = findViewById(R.id.view2);
         view2.setOnClickListener(v -> set_fragment(NotificationsFragment.class, view2));
         view3 = findViewById(R.id.view3);
         view3.setOnClickListener(v -> set_fragment(ProfileFragment.class, view3));
-//        set_fragment(CourseFragment.class, view0);
+        set_fragment(CourseFragment.class, view1);
     }
 
     void set_fragment(Class<? extends Fragment> obj, @NonNull ImageButton view) {

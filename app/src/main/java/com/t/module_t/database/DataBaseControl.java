@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -70,7 +71,7 @@ public class DataBaseControl {
     public void getStudentsEmailByEmail(String email, final UserEmailArrayCallback callback) {
         getUser(email, v -> {
             if (v != null)
-                callback.onUserEmailArrayFetch(v.getStudents());
+                callback.onUserEmailArrayFetch(v.getPeople());
             else
                 callback.onUserEmailArrayFetch(new ArrayList<String>());
         });
@@ -90,11 +91,16 @@ public class DataBaseControl {
         });
     }
 
-    public void updateTeacherByNewStudent(String email, User newuser) {
+    public void updateByNewStudent(String email, User newuser) {
         Log.d(TAG, email);
+        if (newuser.status)
+            return;
         addNotificationForUser("Пользователь " + email + " добавил вас к своим ученикам", newuser.email, "Уведомления");
         mDatabase.child("users").child(translate(email)).child("students").
                 child(translate(newuser.email)).setValue(translate(newuser.email));
+        mDatabase.child("users").child(translate(newuser.email)).child("teachers").
+                child(translate(email)).setValue(translate(email));
+        newChat(email, newuser.email);
     }
 
     public void getNotificationByEmail(String email, final NotificationArrayCallback callback) {
@@ -110,7 +116,7 @@ public class DataBaseControl {
     public void checkUserInStudentsByEmail(String email, User userData, BoolCallback callback) {
         getUser(email, v -> {
             if (v != null) {
-                for (String user : v.students) {
+                for (String user : v.piple) {
                     if (Objects.equals(user, userData.getEmail())) {
                         callback.onBoolFetch(false);
                         return;
@@ -125,6 +131,9 @@ public class DataBaseControl {
     public void deleteUserOfStudents(String teacher, String email) {
         mDatabase.child("users").child(translate(teacher)).child("students").
                 child(translate(email)).removeValue();
+        mDatabase.child("users").child(translate(email)).child("teachers").
+                child(translate(teacher)).removeValue();
+        mDatabase.child("message").child(translate(teacher) + translate(email)).removeValue();
         addNotificationForUser("Преподаватель " + teacher + " удалил вас, как своего студента.", email, "Уведомления");
     }
 
@@ -313,5 +322,110 @@ public class DataBaseControl {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public void newChat(String email_teacher, String email_student) {
+        String key = translate(email_teacher) + translate(email_student);
+        Chat chat = new Chat(email_teacher, email_student);
+        mDatabase.child("message").child(key).setValue(chat);
+        newMessageOnChat(key, email_teacher);
+    }
+
+    public void newMessageOnChat(String key, String email) {
+        mDatabase.child("message").child(key).child("messages").push()
+                .setValue(new Message("привет, я твой новый препод", email));
+    }
+
+    public void sendMessage(String emailTeacher, String emailStudent, String string, String by) {
+        mDatabase.child("message").child(translate(emailTeacher) + translate(emailStudent))
+                .child("messages").push().setValue(new Message(string, by));
+    }
+    public interface ArrayMessageCallback{
+        void onArrayMessageOnFetch(ArrayList<Message> messages);
+    }
+    public void addChatOnProcess(String emailTeacher, String emailStudent, ArrayMessageCallback callback) {
+        mDatabase.child("message").child(translate(emailTeacher) + translate(emailStudent)).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
+                Log.i(TAG, snapshot.toString() + "\n" + previousChildName);
+//                callback.onNotificationFetch(new Notification((HashMap<String, Object>)snapshot.getValue()));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.i(TAG, snapshot.toString());
+                ArrayList<Message> list = new ArrayList<>();
+
+                // Преобразуем DataSnapshot в HashMap
+                HashMap<String, Object> notificationsMap = (HashMap<String, Object>) snapshot.getValue();
+                if (notificationsMap != null) {
+                    // Перебираем каждую запись в узле "notifications" и создаем объекты Notification
+                    for (Map.Entry<String, Object> entry : notificationsMap.entrySet()) {
+                        Message message = new Message((HashMap<String, Object>) entry.getValue());
+                        list.add(message);
+                    }
+                }
+                // Передаем список уведомлений через колбэк
+                Collections.sort(list);
+                callback.onArrayMessageOnFetch(list);
+            }
+
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Log.i(TAG, "adddddddddddddddddddddddddddddddd");
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.i(TAG, "adddddddddddddddddddddddddddddddd");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "adddddddddddddddddddddddddddddddd");
+
+            }
+        });
+    }
+
+    public interface ArrayChatCallback {
+
+        void onArrayChatFetch(ArrayList<Chat> chats);
+
+    }
+
+    public void getChatsOfUser(String email, ArrayChatCallback callback) {
+        getUser(email, user -> {
+            if (user == null) {
+                callback.onArrayChatFetch(null);
+                return;
+            }
+            ArrayList<Chat> chats = new ArrayList<>();
+            String token;
+            for (String email_:
+                 user.piple) {
+                if (user.status){
+                    token = translate(email) + translate(email_);
+                }else{
+                    token = translate(email_) + translate(email);
+                }
+                mDatabase.child("message").child(token).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.getResult().getValue() != null) {
+                            Object chatData = task.getResult().getValue();
+                            Log.d("firebase", String.valueOf(chatData));
+                            chats.add(new Chat((HashMap<String, Object>) chatData));
+                            if(chats.size() == user.piple.size()){
+                                callback.onArrayChatFetch(chats);
+                            }
+                        }
+                    }
+                });
+            }
+        });
     }
 }
