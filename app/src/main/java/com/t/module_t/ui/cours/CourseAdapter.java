@@ -16,11 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.t.module_t.CreateNote;
 import com.t.module_t.R;
-import com.t.module_t.database.CourseElement;
-import com.t.module_t.database.StorageControl;
-import com.t.module_t.database.User;
+import com.t.module_t.database.entity.CourseElement;
+import com.t.module_t.database.control.StorageControl;
+import com.t.module_t.database.entity.User;
 
 import java.io.File;
 import java.io.IOException;

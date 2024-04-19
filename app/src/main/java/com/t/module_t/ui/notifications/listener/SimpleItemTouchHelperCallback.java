@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.t.module_t.database.DataBaseControl;
+import com.t.module_t.database.control.DataBaseControl;
 import com.t.module_t.ui.notifications.NotificationAdapter;
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {

@@ -13,8 +13,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.t.module_t.R;
-import com.t.module_t.database.Chat;
-import com.t.module_t.database.User;
+import com.t.module_t.database.entity.Chat;
+import com.t.module_t.database.entity.User;
 import com.t.module_t.ui.mess.chat.ChatFragment;
 
 import java.util.ArrayList;

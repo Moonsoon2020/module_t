@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.R;
-import com.t.module_t.database.DataBaseControl;
-import com.t.module_t.database.Notification;
+import com.t.module_t.database.control.DataBaseControl;
+import com.t.module_t.database.entity.Notification;
 import com.t.module_t.databinding.FragmentNotificationsBinding;
 import com.t.module_t.ui.notifications.listener.OnStartDragListener;
 import com.t.module_t.ui.notifications.listener.SimpleItemTouchHelperCallback;

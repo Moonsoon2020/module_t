@@ -14,10 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.t.module_t.AutoriseActivity;
+import com.t.module_t.ui.auth.AutoriseActivity;
 import com.t.module_t.R;
-import com.t.module_t.database.DataBaseControl;
-import com.t.module_t.database.User;
+import com.t.module_t.database.control.DataBaseControl;
+import com.t.module_t.database.entity.User;
 import com.t.module_t.databinding.ProfAcBinding;
 import com.t.module_t.ui.settings.student.StudentFragment;
 

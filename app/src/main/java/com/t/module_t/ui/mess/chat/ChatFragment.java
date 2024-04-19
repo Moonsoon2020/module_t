@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.R;
-import com.t.module_t.database.Chat;
-import com.t.module_t.database.DataBaseControl;
-import com.t.module_t.database.MessageControl;
+import com.t.module_t.database.entity.Chat;
+import com.t.module_t.database.control.DataBaseControl;
+import com.t.module_t.database.control.MessageControl;
 import com.t.module_t.databinding.ChatFragmentBinding;
-import com.t.module_t.ui.DownlandFragment;
+import com.t.module_t.ui.optionally.DownlandFragment;
 import com.t.module_t.ui.mess.MessFragment;
 
 import java.util.Objects;

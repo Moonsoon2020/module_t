@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.t.module_t.R;
-import com.t.module_t.database.Message;
+import com.t.module_t.database.entity.Message;
 
 import java.util.ArrayList;
 import java.util.List;

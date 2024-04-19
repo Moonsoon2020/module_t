@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.t.module_t.R;
-import com.t.module_t.database.Notification;
+import com.t.module_t.database.entity.Notification;
 import com.t.module_t.ui.notifications.listener.ItemTouchHelperViewHolder;
 import com.t.module_t.ui.notifications.listener.OnStartDragListener;
 

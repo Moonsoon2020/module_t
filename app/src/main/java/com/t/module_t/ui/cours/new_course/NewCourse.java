@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.R;
-import com.t.module_t.database.DataBaseControl;
+import com.t.module_t.database.control.DataBaseControl;
 
 public class NewCourse extends AppCompatActivity {
     @Override

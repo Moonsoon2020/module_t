@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.t.module_t.R;
-import com.t.module_t.database.DataBaseControl;
-import com.t.module_t.database.User;
+import com.t.module_t.database.control.DataBaseControl;
+import com.t.module_t.database.entity.User;
 
 import java.util.List;
 public class StudentsAdapter  extends RecyclerView.Adapter<StudentsAdapter.ViewHolder>{
