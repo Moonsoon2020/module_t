@@ -1,4 +1,4 @@
-package com.t.module_t.ui.cours.new_course;
+package com.t.module_t.ui.cours.setting;
 
 
 import android.content.Context;

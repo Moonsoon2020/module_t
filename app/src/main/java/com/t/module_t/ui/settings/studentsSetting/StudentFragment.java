@@ -1,4 +1,4 @@
-package com.t.module_t.ui.settings.student;
+package com.t.module_t.ui.settings.studentsSetting;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,7 +37,9 @@ public class StudentFragment extends Fragment {
         binding = FragmentAddStidentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         TextView back = root.findViewById(R.id.back1);
-        back.setOnClickListener(v -> getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new ProfileFragment()).commit());
+        back.setOnClickListener(v ->
+                on_back());
+
         control.getUser(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString(), v -> {
             if (v.status) {
                 EditText email = root.findViewById(R.id.editTextTextEmailAddress);
@@ -78,6 +81,23 @@ public class StudentFragment extends Fragment {
 
             }
         });
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                on_back();
+            }
+        });
         return root;
     }
+
+    private void on_back() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                getFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new ProfileFragment()).commit();
+            }
+        }.start();
+    }
+
 }

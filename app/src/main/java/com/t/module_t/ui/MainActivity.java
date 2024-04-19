@@ -14,20 +14,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.R;
 import com.t.module_t.databinding.ActivityMainBinding;
 import com.t.module_t.service.FirebaseMessagingService;
-import com.t.module_t.ui.optionally.DownlandFragment;
 import com.t.module_t.ui.cours.CourseFragment;
 import com.t.module_t.ui.mess.MessFragment;
 import com.t.module_t.ui.notifications.NotificationsFragment;
+import com.t.module_t.ui.optionally.DownlandFragment;
 import com.t.module_t.ui.settings.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private ActivityMainBinding binding;
-    private FirebaseAuth mAuth;
     ImageButton view0, view1, view2, view3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +57,15 @@ public class MainActivity extends AppCompatActivity {
     void set_fragment(Class<? extends Fragment> obj, @NonNull ImageButton view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        // Устанавливаем цвет фона кнопок
         view0.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN);
         view1.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN);
         view2.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN);
         view3.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN);
         view.setColorFilter(ContextCompat.getColor(this, R.color.blue), PorterDuff.Mode.SRC_IN);
-
-        // Отображаем DownlandFragment
         DownlandFragment downlandFragment = new DownlandFragment();
         fragmentTransaction.replace(R.id.fragmentContainerView, downlandFragment);
         fragmentTransaction.commit();
-        // Устанавливаем цвет фона кнопок
-
-
         // Запускаем загрузку данных асинхронно
         Thread thread = new Thread(() -> {
             // Делаем паузу для имитации загрузки данных

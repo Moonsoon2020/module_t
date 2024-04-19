@@ -1,4 +1,4 @@
-package com.t.module_t.ui.cours;
+package com.t.module_t.ui.cours.operationOnNode;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -50,18 +50,11 @@ public class CreateNote extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-
-        switch(requestCode)
-        {
-            case 1:
-            {
-                if (resultCode == RESULT_OK)
-                {
-                    chosenUri = data.getData();
-                    ImageView imageView = findViewById(R.id.imageView);
-                    imageView.setImageResource(R.drawable.baseline_check_24);
-                }
-                break;
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                chosenUri = data.getData();
+                ImageView imageView = findViewById(R.id.imageView);
+                imageView.setImageResource(R.drawable.baseline_check_24);
             }
         }
     }

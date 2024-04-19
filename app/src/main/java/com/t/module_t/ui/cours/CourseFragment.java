@@ -30,7 +30,7 @@ import com.t.module_t.database.control.DataBaseControl;
 import com.t.module_t.database.entity.User;
 import com.t.module_t.databinding.FragmentCourseBinding;
 import com.t.module_t.ui.cours.new_course.NewCourse;
-import com.t.module_t.ui.cours.new_course.SettingsCourse;
+import com.t.module_t.ui.cours.setting.SettingsCourse;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

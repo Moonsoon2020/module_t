@@ -19,7 +19,7 @@ import com.t.module_t.R;
 import com.t.module_t.database.control.DataBaseControl;
 import com.t.module_t.database.entity.User;
 import com.t.module_t.databinding.ProfAcBinding;
-import com.t.module_t.ui.settings.student.StudentFragment;
+import com.t.module_t.ui.settings.studentsSetting.StudentFragment;
 
 
 public class ProfileFragment extends Fragment {

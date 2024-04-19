@@ -1,4 +1,4 @@
-package com.t.module_t.ui.cours.new_course;
+package com.t.module_t.ui.cours.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.R;
 import com.t.module_t.database.control.DataBaseControl;
 import com.t.module_t.database.entity.User;
+import com.t.module_t.ui.cours.setting.StudentsAdapter;
 
 import java.util.ArrayList;
 

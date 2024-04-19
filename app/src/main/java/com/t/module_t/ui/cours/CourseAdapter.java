@@ -20,6 +20,7 @@ import com.t.module_t.R;
 import com.t.module_t.database.entity.CourseElement;
 import com.t.module_t.database.control.StorageControl;
 import com.t.module_t.database.entity.User;
+import com.t.module_t.ui.cours.operationOnNode.CreateNote;
 
 import java.io.File;
 import java.io.IOException;

@@ -63,13 +63,13 @@
             >
 
         </activity>
-        <activity android:name=".ui.cours.new_course.SettingsCourse"
+        <activity android:name=".ui.cours.setting.SettingsCourse"
             android:exported="true"
             android:screenOrientation="portrait">
             >
 
         </activity>
-        <activity android:name=".ui.cours.CreateNote" android:exported="true"
+        <activity android:name=".ui.cours.operationOnNode.CreateNote" android:exported="true"
             android:screenOrientation="portrait">
             >
 

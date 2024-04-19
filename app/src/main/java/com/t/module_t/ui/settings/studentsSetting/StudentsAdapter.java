@@ -1,4 +1,4 @@
-package com.t.module_t.ui.settings.student;
+package com.t.module_t.ui.settings.studentsSetting;
 
 
 import android.content.Context;
