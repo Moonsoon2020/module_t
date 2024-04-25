@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.ActivityNotFoundException;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,12 +35,15 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final List<CourseElement> states;
     private final User user;
     private String id_course;
+    private Context context;
 
     public CourseAdapter(Context context, List<CourseElement> states, User user, String id_course) {
         this.states = states;
         this.inflater = LayoutInflater.from(context);
         this.user = user;
         this.id_course = id_course;
+        this.context = context;
+
     }
 
     @Override
@@ -75,10 +79,19 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()) {
-            case 0:{
+            case 0: {
                 ViewHolderItem hold = (ViewHolderItem) holder;
                 CourseElement state = states.get(position);
                 hold.nameView.setText(state.getName());
+                hold.nameView.setOnClickListener(v -> {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+//                            inflater.getContext().beginTransaction().replace(R.id.fragmentContainerView, new ProfileFragment()).commit();
+                        } // тут я хочу поменять контет во фрагменте
+                    }.start();
+                });
                 hold.button.setOnClickListener(v -> {
                     StorageControl control = new StorageControl(id_course);
                     try {
@@ -93,7 +106,7 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             try {
                                 inflater.getContext().startActivity(openFileIntent);
-                            } catch (ActivityNotFoundException ignored){
+                            } catch (ActivityNotFoundException ignored) {
                                 Toast.makeText(inflater.getContext(), "Стандартное средство открытия файла этого типа не найдено", Toast.LENGTH_SHORT).show();
                             }
 
@@ -106,9 +119,9 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 });
                 break;
             }
-            case 1:{
+            case 1: {
                 ViewHolderEnd hold = (ViewHolderEnd) holder;
-                hold.button.setOnClickListener(v ->{
+                hold.button.setOnClickListener(v -> {
                     Intent intent = new Intent(inflater.getContext(), CreateNote.class);
                     intent.putExtra("id_course", id_course);
                     inflater.getContext().startActivity(intent);
@@ -144,6 +157,7 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public static class ViewHolderEnd extends RecyclerView.ViewHolder {
         Button button;
+
         ViewHolderEnd(View view) {
             super(view);
             button = view.findViewById(R.id.button2);

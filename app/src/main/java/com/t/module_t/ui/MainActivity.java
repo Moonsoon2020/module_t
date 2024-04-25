@@ -7,7 +7,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -18,15 +18,20 @@ import com.t.module_t.R;
 import com.t.module_t.databinding.ActivityMainBinding;
 import com.t.module_t.service.FirebaseMessagingService;
 import com.t.module_t.ui.cours.CourseFragment;
+import com.t.module_t.ui.entity.EntityFragmentView;
 import com.t.module_t.ui.mess.MessFragment;
 import com.t.module_t.ui.notifications.NotificationsFragment;
 import com.t.module_t.ui.optionally.DownlandFragment;
 import com.t.module_t.ui.settings.ProfileFragment;
 
+import java.util.EmptyStackException;
+import java.util.Stack;
+
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private ActivityMainBinding binding;
     ImageButton view0, view1, view2, view3;
+    Stack<EntityFragmentView> stack = new Stack<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,27 +39,40 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         NotificationManager notificationManager =
                 getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(new NotificationChannel("1011",
-                "notify", NotificationManager.IMPORTANCE_LOW));
+        notificationManager.createNotificationChannel(new NotificationChannel(
+                "1011","notify", NotificationManager.IMPORTANCE_LOW));
 //        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         Intent intent = new Intent(this, FirebaseMessagingService.class);
         startService(intent);
         view0 = findViewById(R.id.view0);
-        view0.setBackgroundColor(getColor(R.color.white));
-        view0.setOnClickListener(v -> set_fragment(MessFragment.class, view0));
+        view0.setOnClickListener(v -> set_fragment(new EntityFragmentView(MessFragment.class, view0)));
         view1 = findViewById(R.id.view1);
-        view1.setBackgroundColor(getColor(R.color.white));
-        view1.setOnClickListener(v -> set_fragment(CourseFragment.class, view1));
+        view1.setOnClickListener(v -> set_fragment(new EntityFragmentView(CourseFragment.class, view1)));
         view2 = findViewById(R.id.view2);
-        view2.setBackgroundColor(getColor(R.color.white));
-        view2.setOnClickListener(v -> set_fragment(NotificationsFragment.class, view2));
+        view2.setOnClickListener(v -> set_fragment(new EntityFragmentView(NotificationsFragment.class, view2)));
         view3 = findViewById(R.id.view3);
-        view3.setBackgroundColor(getColor(R.color.white));
-        view3.setOnClickListener(v -> set_fragment(ProfileFragment.class, view3));
-        set_fragment(CourseFragment.class, view1);
+        view3.setOnClickListener(v -> set_fragment(new EntityFragmentView(ProfileFragment.class, view3)));
+        set_fragment(new EntityFragmentView(CourseFragment.class, view1));
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                set_fragment(null);
+            }
+        });
     }
 
-    void set_fragment(Class<? extends Fragment> obj, @NonNull ImageButton view) {
+    void set_fragment(EntityFragmentView entity) {
+        if (entity == null){
+            try {
+                entity = stack.pop();
+            } catch (EmptyStackException e) {
+                finish();
+            }
+        } else {
+            stack.add(entity);
+        }
+        Class<? extends Fragment> obj = entity.getFragmentClass();
+        ImageButton view = (ImageButton) entity.getView();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         // Устанавливаем цвет фона кнопок
