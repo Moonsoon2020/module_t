@@ -48,8 +48,7 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        if (position == states.size() && user.status)
-            return 1;
+        if (position == states.size() && user.status) return 1;
         return 0;
     }
 
@@ -58,13 +57,11 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case 0: {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_element_item,
-                        parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_element_item, parent, false);
                 return new ViewHolderItem(view);
             }
             case 1: {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_element_end,
-                        parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_element_end, parent, false);
                 return new ViewHolderEnd(view);
             }
         }
@@ -88,18 +85,18 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         @Override
                         public void run() {
                             super.run();
-//                            inflater.getContext().beginTransaction().replace(R.id.fragmentContainerView, new ProfileFragment()).commit();
-                        } // тут я хочу поменять контет во фрагменте
+                            Intent intent = new Intent(context, ChangeNode.class);
+                            intent.putExtra("name", hold.nameView.getText().toString());
+                            intent.putExtra("id_course", id_course);
+                            context.startActivity(intent);
+                        }
                     }.start();
                 });
                 hold.button.setOnClickListener(v -> {
                     StorageControl control = new StorageControl(id_course);
                     try {
                         control.getFile(hold.nameView.getText().toString(), file -> {
-                            Uri fileUri = FileProvider.getUriForFile(
-                                    inflater.getContext(),
-                                    inflater.getContext().getApplicationContext().getPackageName() + ".provider",
-                                    file.file);
+                            Uri fileUri = FileProvider.getUriForFile(inflater.getContext(), inflater.getContext().getApplicationContext().getPackageName() + ".provider", file.file);
                             Log.d(TAG, file.type.toString());
                             Intent openFileIntent = new Intent(Intent.ACTION_VIEW);
                             openFileIntent.setDataAndType(fileUri, file.type); // здесь могут быть любые файлы
@@ -139,8 +136,7 @@ public class CourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        if (user.status)
-            return states.size() + 1;
+        if (user.status) return states.size() + 1;
         return states.size();
     }
 

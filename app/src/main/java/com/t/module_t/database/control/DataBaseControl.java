@@ -320,8 +320,10 @@ public class DataBaseControl {
                 child("notifications").removeValue();
     }
 
-    public void updateCourseOnNewNote(String title, String id_course) {
-        mDatabase.child("course").child(id_course).child("items").push().setValue(title);
+    public String updateCourseOnNewNote(String title, String id_course) {
+        String key = String.valueOf(mDatabase.child("course").child(id_course).child("items").push().getKey());
+        mDatabase.child("course").child(id_course).child("items").child(key).setValue(title);
+        return key;
     }
 
     public void setToken(String email, String token) {
@@ -353,9 +355,44 @@ public class DataBaseControl {
         mDatabase.child("message").child(translate(emailTeacher) + translate(emailStudent))
                 .child("messages").push().setValue(new Message(string, by));
     }
-    public interface ArrayMessageCallback{
+
+    public void changeNameNodeByIDCourse(String idCourse, String new_name, String old_name) {
+        mDatabase.child("course").child(idCourse).child("items").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                HashMap<String, String> chatData = (HashMap<String, String>) task.getResult().getValue();
+                assert chatData != null;
+                for (String id : chatData.keySet()) {
+                    if (Objects.equals(chatData.get(id), old_name)) {
+                        mDatabase.child("course").child(idCourse).child("items").child(id).setValue(new_name);
+                        break;
+                    }
+                }
+            }
+        });
+
+    }
+
+    public void deleteNodeOnCourse(String name, String idCourse) {
+        mDatabase.child("course").child(idCourse).child("items").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                HashMap<String, String> chatData = (HashMap<String, String>) task.getResult().getValue();
+                assert chatData != null;
+                for (String id : chatData.keySet()) {
+                    if (Objects.equals(chatData.get(id), name)) {
+                        mDatabase.child("course").child(idCourse).child("items").child(id).removeValue();
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    public interface ArrayMessageCallback {
         void onArrayMessageOnFetch(ArrayList<Message> messages);
     }
+
     public void addChatOnProcess(String emailTeacher, String emailStudent, ArrayMessageCallback callback) {
         mDatabase.child("message").child(translate(emailTeacher) + translate(emailStudent)).addChildEventListener(new ChildEventListener() {
             @Override
@@ -418,11 +455,11 @@ public class DataBaseControl {
             }
             ArrayList<Chat> chats = new ArrayList<>();
             String token;
-            for (String email_:
-                 user.piple) {
-                if (user.status){
+            for (String email_ :
+                    user.piple) {
+                if (user.status) {
                     token = translate(email) + translate(email_);
-                }else{
+                } else {
                     token = translate(email_) + translate(email);
                 }
                 mDatabase.child("message").child(token).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -432,7 +469,7 @@ public class DataBaseControl {
                             Object chatData = task.getResult().getValue();
                             Log.d("firebase", String.valueOf(chatData));
                             chats.add(new Chat((HashMap<String, Object>) chatData));
-                            if(chats.size() == user.piple.size()){
+                            if (chats.size() == user.piple.size()) {
                                 callback.onArrayChatFetch(chats);
                             }
                         }

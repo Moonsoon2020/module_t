@@ -45,12 +45,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, FirebaseMessagingService.class);
         startService(intent);
         view0 = findViewById(R.id.view0);
+        view0.setBackgroundColor(getColor(R.color.white));
         view0.setOnClickListener(v -> set_fragment(new EntityFragmentView(MessFragment.class, view0)));
         view1 = findViewById(R.id.view1);
+        view1.setBackgroundColor(getColor(R.color.white));
         view1.setOnClickListener(v -> set_fragment(new EntityFragmentView(CourseFragment.class, view1)));
         view2 = findViewById(R.id.view2);
+        view2.setBackgroundColor(getColor(R.color.white));
         view2.setOnClickListener(v -> set_fragment(new EntityFragmentView(NotificationsFragment.class, view2)));
         view3 = findViewById(R.id.view3);
+        view3.setBackgroundColor(getColor(R.color.white));
         view3.setOnClickListener(v -> set_fragment(new EntityFragmentView(ProfileFragment.class, view3)));
         set_fragment(new EntityFragmentView(CourseFragment.class, view1));
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {

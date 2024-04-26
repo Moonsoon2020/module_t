@@ -125,8 +125,6 @@ public class CourseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "resume");
-
-        // Запускаем загрузку данных при возобновлении фрагмента
 //        new LoadCoursesTask().execute();
     }
 
@@ -188,6 +186,11 @@ public class CourseFragment extends Fragment {
             }
 
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
