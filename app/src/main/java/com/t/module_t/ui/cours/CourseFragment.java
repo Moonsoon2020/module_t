@@ -233,6 +233,6 @@ public class CourseFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNoteEvent(String event) {
         courses.add(new CourseElement(event));
-//        courseAdapter.notifyDataSetChanged();
+        courseAdapter.notifyDataSetChanged();
     }
 }

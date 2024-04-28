@@ -8,10 +8,10 @@
 
     <TextView
         android:id="@+id/textViewsettigs_student"
+        style="@style/text"
         android:layout_width="0dp"
-        android:layout_weight="0.9"
         android:layout_height="match_parent"
-        android:text="TextView"
+        android:layout_weight="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
