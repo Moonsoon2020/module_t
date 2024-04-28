@@ -47,6 +47,7 @@ public class CourseFragment extends Fragment {
     private DatabaseReference mDatabase;
     private ArrayList<String> items_id_course;
     private RecyclerView recyclerView;
+    int position;
     private RecyclerView.Adapter courseAdapter;
     private ArrayList<CourseElement> courses = new ArrayList<>();
     private User user;
@@ -125,6 +126,8 @@ public class CourseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "resume");
+
+        changeRec(position);
 //        new LoadCoursesTask().execute();
     }
 
@@ -167,17 +170,7 @@ public class CourseFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                courses.clear();
-                courseAdapter = new CourseAdapter(requireActivity(), courses, user, items_id_course.get(position));
-                recyclerView.setAdapter(courseAdapter);
-                Log.d(TAG, "add element in rec");
-                control.getCourse(items_id_course.get(position), course -> {
-                    courses.clear();
-                    for (String item : course.items) {
-                        courses.add(new CourseElement(item));
-                    }
-                    courseAdapter.notifyDataSetChanged();
-                });
+                changeRec(position);
             }
 
             @Override
@@ -187,10 +180,24 @@ public class CourseFragment extends Fragment {
 
         });
     }
-
+    private void changeRec(int position){
+        courses.clear();
+        courseAdapter = new CourseAdapter(requireActivity(), courses, user, items_id_course.get(position));
+        recyclerView.setAdapter(courseAdapter);
+        Log.d(TAG, "add element in rec");
+        control.getCourse(items_id_course.get(position), course -> {
+            courses.clear();
+            for (String item : course.items) {
+                courses.add(new CourseElement(item));
+            }
+            courseAdapter.notifyDataSetChanged();
+        });
+        this.position = position;
+    }
     @Override
     public void onStart() {
         super.onStart();
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
