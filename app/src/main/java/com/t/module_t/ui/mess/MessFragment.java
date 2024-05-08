@@ -40,7 +40,8 @@ public class MessFragment extends Fragment {
                 flag++;
             });
             control.getChatsOfUser(FirebaseAuth.getInstance().getCurrentUser().getEmail(), chats -> {
-                array.addAll(chats);
+                if (chats != null)
+                    array.addAll(chats);
                 flag++;
             });
             while (flag < 2){

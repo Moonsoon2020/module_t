@@ -449,7 +449,7 @@ public class DataBaseControl {
 
     public void getChatsOfUser(String email, ArrayChatCallback callback) {
         getUser(email, user -> {
-            if (user == null) {
+            if (user == null || user.piple.isEmpty()) {
                 callback.onArrayChatFetch(null);
                 return;
             }
