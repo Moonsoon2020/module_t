@@ -25,8 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.t.module_t.R;
-import com.t.module_t.database.entity.CourseElement;
 import com.t.module_t.database.control.DataBaseControl;
+import com.t.module_t.database.entity.CourseElement;
 import com.t.module_t.database.entity.User;
 import com.t.module_t.databinding.FragmentCourseBinding;
 import com.t.module_t.ui.cours.new_course.NewCourse;
@@ -126,8 +126,8 @@ public class CourseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "resume");
-
-        changeRec(position);
+        if (flag)
+            changeRec(position);
 //        new LoadCoursesTask().execute();
     }
 
@@ -182,6 +182,9 @@ public class CourseFragment extends Fragment {
     }
     private void changeRec(int position){
         courses.clear();
+        if (items_id_course.isEmpty() && user.status){
+            startActivityForResult(new Intent(requireActivity(), NewCourse.class), 101);
+        }
         courseAdapter = new CourseAdapter(requireActivity(), courses, user, items_id_course.get(position));
         recyclerView.setAdapter(courseAdapter);
         Log.d(TAG, "add element in rec");

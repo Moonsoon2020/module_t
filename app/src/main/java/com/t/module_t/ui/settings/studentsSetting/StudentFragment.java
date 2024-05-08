@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.t.module_t.R;
 import com.t.module_t.database.control.DataBaseControl;
 import com.t.module_t.database.entity.User;
-import com.t.module_t.databinding.FragmentAddStidentsBinding;
+import com.t.module_t.databinding.FragmentAddStudentsBinding;
 import com.t.module_t.ui.settings.ProfileFragment;
 
 import java.util.ArrayList;
@@ -28,13 +28,13 @@ import java.util.ArrayList;
 public class StudentFragment extends Fragment {
 
     private String TAG = "Student_set_fragment";
-    FragmentAddStidentsBinding binding;
+    FragmentAddStudentsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBaseControl control = new DataBaseControl(getContext());
-        binding = FragmentAddStidentsBinding.inflate(inflater, container, false);
+        binding = FragmentAddStudentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         TextView back = root.findViewById(R.id.back1);
         back.setOnClickListener(v ->
@@ -67,6 +67,7 @@ public class StudentFragment extends Fragment {
                                     if (flag) {
                                         control.updateByNewStudent(FirebaseAuth.getInstance().getCurrentUser().getEmail(), userData);
                                         courses.add(userData);
+                                        new DataBaseControl(getContext()).addNotificationForUser("Вы добавлены к новому преподавателю", userData.email, "Новый Преподаватель");
                                         Log.d(TAG, userData.toString());
                                         courseAdapter.notifyItemInserted(courses.size() - 1);
                                         courseAdapter.notifyDataSetChanged();

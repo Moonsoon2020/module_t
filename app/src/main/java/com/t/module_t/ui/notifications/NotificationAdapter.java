@@ -50,7 +50,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Notification notification = mItems.get(position);
         holder.data = notification;
         holder.textView.setText(notification.text);
-        holder.dateView.setText(notification.date.toString());
+        holder.dateView.setText(notification.getCurrentDate());
     }
 
 

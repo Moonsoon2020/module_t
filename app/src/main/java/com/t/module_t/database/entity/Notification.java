@@ -1,5 +1,6 @@
 package com.t.module_t.database.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,5 +68,11 @@ public class Notification{
         if (obj == null || getClass() != obj.getClass()) return false;
         Notification that = (Notification) obj;
         return Objects.equals(text, that.text) && Objects.equals(date, that.date);
+    }
+    public String getCurrentDate() {
+        // Получаем текущую дату и время
+        // Форматируем дату в нужный формат
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd.MM.yy");
+        return dateFormat.format(date);
     }
 }
