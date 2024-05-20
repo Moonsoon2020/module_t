@@ -1,7 +1,6 @@
 package com.t.module_t.database.control;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -42,9 +41,9 @@ public class StorageControl {
                     throw new RuntimeException(e);
                 }
                 File finalFile = file;
-//                storage.child(name).getFile(file).addOnCompleteListener(v -> {
+                storage.child(name).getFile(file).addOnCompleteListener(v -> {
                     callback.onFileFetch(new FileT(finalFile, metadata.getContentType()));
-//                });
+                });
             }
 
         });
@@ -53,20 +52,15 @@ public class StorageControl {
 
     public void addFile(Uri fileUri, String string, BoolCallback callback) {
         storage.child(string).putFile(fileUri)
-                .addOnSuccessListener(taskSnapshot -> { // попробуй наоборот
+                .addOnSuccessListener(taskSnapshot -> {
                     control.updateCourseOnNewNote(string, id_course);
                     callback.onBoolFetch(true);
                 })
                 .addOnFailureListener(exception -> {
-                    Log.e(TAG, exception.toString());
                     callback.onBoolFetch(false);
-
                 });
     }
-
     public void deleteFile(String name){
         storage.child(name).delete();
     }
-
-
 }
